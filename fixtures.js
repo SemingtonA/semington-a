@@ -25,9 +25,9 @@ function formatHalf(v) {
 const tbody = document.getElementById("tableBody");
 const status = document.getElementById("status");
 
-fetch("Fixtures_Web.csv", { cache: "no-store" })
+fetch("fixtures_web.csv", { cache: "no-store" })
   .then(r => {
-    if (!r.ok) throw new Error("Fixtures_Web.csv not found");
+    if (!r.ok) throw new Error("fixtures_web.csv not found");
     return r.text();
   })
   .then(text => {
