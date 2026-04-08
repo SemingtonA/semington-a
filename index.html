@@ -123,9 +123,29 @@ footer {
 
 /* Mobile */
 @media (max-width: 700px) {
+
   header h1 {
     font-size: 32px;
   }
+
+  /* Fix logo overlapping buttons on mobile */
+  .logo {
+    position: static;       /* stop absolute positioning */
+    margin: 10px auto 0;
+    text-align: center;
+  }
+
+  .logo img {
+    width: 160px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .nav-buttons {
+    margin-top: 12px;
+  }
+}
 
   .logo img {
     width: 180px;
