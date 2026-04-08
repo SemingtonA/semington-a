@@ -1,5 +1,5 @@
 // fixtures.js
-// GUARANTEED BASELINE for Fixtures_Web.csv
+// GUARANTEED BASELINE for fixtures_web.csv
 // Shows ALL fixtures for the season
 // Uses Points columns for score and formats halves as fractions
 
