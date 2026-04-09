@@ -6,7 +6,7 @@
 <title>Semington A Skittles Team</title>
 
 <style>
-body {
+ body {
   margin: 0;
   min-height: 100vh;
   display: flex;
@@ -17,34 +17,39 @@ body {
 
 /* ===== HEADER ===== */
 header {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
   align-items: center;
   padding: 20px;
+  gap: 10px;
 }
 
-.header-row {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
+/* Title */
 header h1 {
+  grid-column: 1 / 2;
+  grid-row: 1;
   margin: 0;
   font-size: 48px;
-  text-align: center;
 }
 
 /* Logo */
+.logo {
+  grid-column: 2 / 3;
+  grid-row: 1;
+}
+
 .logo img {
-  width: 300px;
+  width: 280px;
   height: auto;
 }
 
-/* Navigation buttons */
+/* Nav buttons */
 .nav-buttons {
-  margin-top: 20px;
+  grid-column: 1 / -1;
+  grid-row: 2;
+  text-align: center;
+  margin-top: 10px;
 }
 
 .nav-buttons a {
@@ -100,32 +105,34 @@ footer {
 @media (max-width: 900px) {
 
   header {
-    padding: 15px;
-  }
-
-  .header-row {
-    flex-direction: column;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    text-align: center;
   }
 
   header h1 {
     font-size: 32px;
-    margin-top: 10px;
+  }
+
+  .logo {
+    grid-row: 2;
   }
 
   .logo img {
     width: 150px;
-    margin-top: 10px;
   }
 
   .nav-buttons {
+    grid-row: 3;
     margin-top: 15px;
   }
 
   .footer-logo img {
     width: 48px;
   }
-}
+} 
 </style>
+
 </head>
 
 <body>
