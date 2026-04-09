@@ -129,6 +129,65 @@ footer {
 
   .footer-logo img {
     width: 48px;
+  }/* ===== HEADER ===== */
+header {
+  padding: 20px;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 48px;
+  text-align: center;
+  flex: 1;
+}
+
+/* Logo */
+.logo img {
+  width: 300px;
+  height: auto;
+}
+
+/* Buttons */
+.nav-buttons {
+  margin-top: 15px;
+  text-align: center;   /* ✅ centered buttons on desktop */
+}
+
+.nav-buttons a {
+  display: inline-block;
+  margin: 6px;
+  padding: 10px 18px;
+  background: #000;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.nav-buttons a:hover {
+  background: #163aa3;
+}
+
+/* ===== MOBILE (portrait + landscape) ===== */
+@media (max-width: 900px) {
+
+  .header-top {
+    flex-direction: column;   /* ✅ logo above title */
+  }
+
+  .logo img {
+    width: 150px;
+    margin-bottom: 10px;
+  }
+
+  header h1 {
+    font-size: 32px;
   }
 } 
 </style>
@@ -138,21 +197,24 @@ footer {
 <body>
 
 <header>
+<header>
+  <div class="header-top">
+    <h1>Semington A Skittles Team</h1>
 
-
-  <h1>Semington A Skittles Team</h1>
-
-  <div class="logo">
-    <img src="Semington A Logo 5.jpg" alt="Semington A Logo">
+    <div class="logo">
+      <img src="Semington A Logo 5.jpg" alt="Semington A Logo">
+    </div>
   </div>
-<div class="nav-buttons">
-  <a href="/semington-a/index.html">Home</a>
-  <a href="/semington-a/fixtures.html">Fixtures & Results</a>
-  <a href="/semington-a/match-results.html">Match Results</a>
-  <a href="/semington-a/tocatch.html">To Catch</a>
-  <a href="/semington-a/gallery.html">Gallery</a>
-  <a href="/semington-a/rules.html">Rules</a>
-</div>
+
+  <div class="nav-buttons">
+    <a href="/semington-a/index.html">Home</a>
+    <a href="/semington-a/fixtures.html">Fixtures & Results</a>
+    <a href="/semington-a/match-results.html">Match Results</a>
+    <a href="/semington-a/tocatch.html">To Catch</a>
+    <a href="/semington-a/gallery.html">Gallery</a>
+    <a href="/semington-a/rules.html">Rules</a>
+  </div>
+</header>
 
 </header>
 
