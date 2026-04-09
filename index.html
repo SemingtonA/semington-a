@@ -6,7 +6,7 @@
 <title>Semington A Skittles Team</title>
 
 <style>
-body {
+ body {
   margin: 0;
   min-height: 100vh;
   display: flex;
@@ -15,32 +15,19 @@ body {
   background-color: #f5f0e6;
 }
 
-/* Header container */
+/* Header */
 header {
   position: relative;
   padding: 20px;
   text-align: center;
 }
+
 header h1 {
   margin: 0;
   font-size: 48px;
 }
 
-/* Visitor counter */
-.counter {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  background: #000;
-  color: #fff;
-  padding: 8px 14px;
-  border-radius: 6px;
-  font-size: 14px;
-  line-height: 1.2;
-  white-space: nowrap;
-}
-
-/* Top-right logo */
+/* Logo */
 .logo {
   position: absolute;
   top: 20px;
@@ -49,28 +36,24 @@ header h1 {
 
 .logo img {
   width: 300px;
-  height: 300px;
+  height: auto;
   object-fit: contain;
 }
 
-/* Buttons */
+/* Navigation */
 .nav-buttons {
-  margin-top: 20px;
+  margin-top: 40px;
 }
 
 .nav-buttons a {
   display: inline-block;
   margin: 6px;
   padding: 10px 18px;
-  background: #000;      /* black */
-  color: #fff;           /* white text */
+  background: #000;
+  color: #fff;
   text-decoration: none;
   border-radius: 4px;
   font-weight: bold;
-}
-
-.nav-buttons a:hover {
-  background: #333;      /* dark grey on hover */
 }
 
 .nav-buttons a:hover {
@@ -93,14 +76,8 @@ main {
 
 .centre-image img {
   width: 600px;
-  height: 450px;
   max-width: 100%;
-  object-fit: contain;
-}
-
-/* Join Us */
-.join-us {
-  margin-bottom: 20px;
+  height: auto;
 }
 
 /* Footer */
@@ -112,74 +89,35 @@ footer {
   color: #555;
 }
 
-.footer-logo {
-  margin-top: 8px;
-}
-
 .footer-logo img {
   width: 60px;
-  height: 60px;
-  object-fit: contain;
+  height: auto;
 }
-/* Mobile-only adjustments */
-@m@media (max-width: 700px) {
-  }
-}edia (max-width: 700px) {
+
+/* ✅ Mobile */
+@media (max-width: 700px) {
 
   header h1 {
     font-size: 32px;
   }
 
-  .logo img {
-    width: 180px;
-    height: auto;
+  .logo {
+    position: static;       /* stops overlap on mobile */
+    margin-top: 10px;
   }
 
-  .centre-image img {
-    height: auto;
+  .logo img {
+    width: 150px;
+  }
+
+  .nav-buttons {
+    margin-top: 20px;
   }
 
   .footer-logo img {
     width: 48px;
-    height: 48px;
   }
-
-}
-
-  .logo img {
-    width: 180px;
-    height: 180px;
-  }
-
-  .counter {
-    position: static;
-    margin-bottom: 10px;
-  }
-
-  .centre-image img {
-    height: auto;
-  }
-
-  .footer-logo img {
-    width: 48px;
-    height: 48px;
-  }
-}/* Lock visitor counter to top-left */
-.counter {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  right: auto;
-  width: auto;
-  display: inline-block;
-  text-align: left;
-  white-space: nowrap;
-  
-}@media (max-width: 700px) {
-  .counter {
-    display: none;
-  }
-}
+} 
 </style>
 </head>
 
