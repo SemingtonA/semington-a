@@ -93,21 +93,27 @@ footer {
   width: 60px;
   height: auto;
 }
-
-/* ✅ Mobile */
+/* Mobile */
 @media (max-width: 700px) {
+
+  header {
+    padding-top: 10px;
+  }
 
   header h1 {
     font-size: 32px;
+    margin-top: 10px;
   }
 
+  /* ✅ THIS IS THE KEY FIX */
   .logo {
-    position: static;       /* stops overlap on mobile */
+    position: static;      /* stop overlapping */
     margin-top: 10px;
   }
 
   .logo img {
-    width: 150px;
+    width: 140px;          /* smaller logo */
+    height: auto;
   }
 
   .nav-buttons {
@@ -117,6 +123,8 @@ footer {
   .footer-logo img {
     width: 48px;
   }
+}
+
 } 
 </style>
 </head>
