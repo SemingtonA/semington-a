@@ -32,15 +32,12 @@ header h1 {
   margin: 0;
   font-size: 48px;
   text-align: center;
+ 
+}.logo {
+  grid-column: 1 / -1;   /* span full width */
+  grid-row: 1;           /* top row */
+  justify-self: center;  /* centered */
 }
-.logo {
-  grid-column: 2 / 3;
-  grid-row: 1;
-  justify-self: end;       /* right side */
-  align-self: center;      /* vertical alignment with title */
-}
-
-
 .logo img {
   width: 280px;
   height: auto;
