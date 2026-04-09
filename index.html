@@ -143,6 +143,26 @@ footer {
   .nav-buttons {
     margin-top: 15px;
   }
+ /* ✅ Touch devices (covers mobile landscape reliably) */
+@media (pointer: coarse) {
+
+  .logo {
+    position: static !important;
+    margin-bottom: 10px;
+  }
+
+  .logo img {
+    width: 140px;
+    height: auto;
+  }
+
+  header h1 {
+    font-size: 32px;
+  }
+
+  .nav-buttons {
+    margin-top: 20px;
+  }
 } 
 </style>
 </head>
