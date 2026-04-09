@@ -6,7 +6,7 @@
 <title>Semington A Skittles Team</title>
 
 <style>
- body {
+body {
   margin: 0;
   min-height: 100vh;
   display: flex;
@@ -15,34 +15,36 @@
   background-color: #f5f0e6;
 }
 
-/* Header */
+/* ===== HEADER ===== */
 header {
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 20px;
-  text-align: center;
+}
+
+.header-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 header h1 {
   margin: 0;
   font-size: 48px;
+  text-align: center;
 }
 
 /* Logo */
-.logo {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-}
-
 .logo img {
   width: 300px;
   height: auto;
-  object-fit: contain;
 }
 
-/* Navigation */
+/* Navigation buttons */
 .nav-buttons {
-  margin-top: 40px;
+  margin-top: 20px;
 }
 
 .nav-buttons a {
@@ -60,7 +62,7 @@ header h1 {
   background: #163aa3;
 }
 
-/* Main */
+/* ===== MAIN ===== */
 main {
   flex: 1;
   padding: 20px;
@@ -80,7 +82,7 @@ main {
   height: auto;
 }
 
-/* Footer */
+/* ===== FOOTER ===== */
 footer {
   margin-top: auto;
   text-align: center;
@@ -93,12 +95,16 @@ footer {
   width: 60px;
   height: auto;
 }
- 
-/* Mobile */
-@media (max-width: 700px) {
+
+/* ===== MOBILE (ALL ORIENTATIONS) ===== */
+@media (max-width: 900px) {
 
   header {
-    padding-top: 10px;
+    padding: 15px;
+  }
+
+  .header-row {
+    flex-direction: column;
   }
 
   header h1 {
@@ -106,64 +112,19 @@ footer {
     margin-top: 10px;
   }
 
-  /* ✅ THIS IS THE KEY FIX */
-  .logo {
-    position: static;      /* stop overlapping */
+  .logo img {
+    width: 150px;
     margin-top: 10px;
-  }
-
-  .logo img {
-    width: 140px;          /* smaller logo */
-    height: auto;
-  }
-
-  .nav-buttons {
-    margin-top: 20px;
-  }
-
-  .footer-logo img {
-    width: 48px;
-  }
- /* Mobile landscape safeguard */
-@media (max-height: 500px) {
-
-  .logo {
-    position: static;
-    margin-bottom: 10px;
-  }
-
-  .logo img {
-    width: 140px;
-  }
-
-  header h1 {
-    font-size: 30px;
   }
 
   .nav-buttons {
     margin-top: 15px;
   }
- /* ✅ Touch devices (covers mobile landscape reliably) */
-@media (pointer: coarse) {
 
-  .logo {
-    position: static !important;
-    margin-bottom: 10px;
+  .footer-logo img {
+    width: 48px;
   }
-
-  .logo img {
-    width: 140px;
-    height: auto;
-  }
-
-  header h1 {
-    font-size: 32px;
-  }
-
-  .nav-buttons {
-    margin-top: 20px;
-  }
-} 
+}
 </style>
 </head>
 
