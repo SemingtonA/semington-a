@@ -121,7 +121,28 @@ footer {
   height: 60px;
   object-fit: contain;
 }
+/* Mobile-only adjustments */
+@media (max-width: 700px) {
 
+  header h1 {
+    font-size: 32px;
+  }
+
+  .logo img {
+    width: 180px;
+    height: auto;
+  }
+
+  .centre-image img {
+    height: auto;
+  }
+
+  .footer-logo img {
+    width: 48px;
+    height: 48px;
+  }
+
+}
 
   .logo img {
     width: 180px;
@@ -158,9 +179,7 @@ footer {
 <body>
 
 <header>
-  <div class="counter">
-    Visitors: <span id="visitCount">0</span>
-  </div>
+
 
   <h1>Semington A Skittles Team</h1>
 
@@ -203,12 +222,7 @@ footer {
   </div>
 </footer>
 
-<script>
-let visits = localStorage.getItem("semingtonA_visits");
-visits = visits ? Number(visits) + 1 : 1;
-localStorage.setItem("semingtonA_visits", visits);
-document.getElementById("visitCount").textContent = visits;
-</script>
+
 
 </body>
 </html>
