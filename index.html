@@ -27,10 +27,14 @@ header h1 {
   font-size: 48px;
 }
 
+/* Header must be positioned for absolute children */
+header {
+  position: relative;
+}
+
 /* Visitor counter */
 .counter {
-  header{
-  position: relative;
+  position: absolute;
   top: 20px;
   left: 20px;
   background: #000;
