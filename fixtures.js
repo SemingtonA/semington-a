@@ -1,5 +1,5 @@
-// fixtures.js (working, robust)
-// Loads fixtures_web.csv and ignores header rows automatically
+// fixtures.js (robust)
+// Reads fixtures_web.csv and ignores header rows automatically
 
 function parseCSV(text) {
   return text
@@ -39,7 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const grid = parseCSV(text);
 
       const fixtures = grid
-        // Only keep real date rows like 29-Aug-25
         .filter(r => r[0] && /\d{2}-[A-Za-z]{3}-\d{2}/.test(r[0]))
         .map(r => {
           const date = r[0];
@@ -73,3 +72,4 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error(e);
     });
 });
+``
