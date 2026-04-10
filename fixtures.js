@@ -24,11 +24,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const status = document.getElementById("status");
 
   if (!tbody || !status) {
-    console.error("Missing #tableBody or #status");
+    console.error("Missing #tableBody or #status in fixtures.html");
     return;
   }
 
-  fetch("fixtures_web.csv", { cache: "no-store" })
+  const csvUrl = `fixtures_web.csv?v=${Date.now()}`; // cache-bust
+
+  fetch(csvUrl, { cache: "no-store" })
     .then(r => {
       if (!r.ok) throw new Error("fixtures_web.csv not found");
       return r.text();
@@ -37,22 +39,23 @@ document.addEventListener("DOMContentLoaded", () => {
       const grid = parseCSV(text);
 
       const fixtures = grid
+        // Only keep date rows like 29-Aug-25
         .filter(r => r[0] && /\d{2}-[A-Za-z]{3}-\d{2}/.test(r[0]))
         .map(r => {
+          const date = r[0];
+          const day = r[1];
           const home = r[2];
           const away = r[8];
           const homePts = r[4];
           const awayPts = r[6];
 
           const points =
-            homePts && awayPts
-              ? `${formatHalf(homePts)}-${formatHalf(awayPts)}`
-              : "";
+            homePts && awayPts ? `${formatHalf(homePts)}-${formatHalf(awayPts)}` : "";
 
           return `
             <tr>
-              <td>${r[0]}</td>
-              <td>${r[1]}</td>
+              <td>${date}</td>
+              <td>${day}</td>
               <td>${home} vs ${away}</td>
               <td class="points">${points}</td>
               <td>${r[9] || ""}</td>
@@ -71,3 +74,4 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error(e);
     });
 });
+
