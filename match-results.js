@@ -198,10 +198,7 @@ fetch(new URL("match_results.csv", window.location.href).toString(), { cache: "n
         for (var r = 0; r < raw.length; r++) {
           var row = raw[r];
           if (!isLeague(row.details)) continue;
-
-          // do not count A N Other towards averages
-          if (row.player === "A N Other") continue;
-
+      
           var sc = toNum(row.score);
           if (!isFinite(sc)) continue;
 
