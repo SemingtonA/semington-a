@@ -146,6 +146,26 @@ fetch(new URL("match_results.csv", window.location.href).toString(), { cache: "n
         "<td>" + avg + "</td>" +
       "</tr>";
     }
+    
+block.sort(function (a, b) {
+
+  // A N Other ALWAYS last
+  if (a.player === "A N Other") return 1;
+  if (b.player === "A N Other") return -1;
+
+  var aA = toNum(a.avg);
+  var bA = toNum(b.avg);
+
+  // both have averages → highest first
+  if (isFinite(aA) && isFinite(bA)) return bA - aA;
+
+  // one has avg, one does not → avg comes first
+  if (isFinite(aA)) return -1;
+  if (isFinite(bA)) return 1;
+
+  // otherwise keep original order
+  return 0;
+});
 
     function render(matchId) {
 // Rebuild league averages ONLY up to the selected match
