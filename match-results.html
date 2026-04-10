@@ -147,4 +147,92 @@
 
     .header-top {
       flex-direction: column;
+      text-align: center;
+    }
 
+    header h1 {
+      font-size: 32px;
+      margin-top: 10px;
+    }
+
+    .logo img {
+      width: 150px;
+      margin-bottom: 10px;
+    }
+
+    table {
+      font-size: 12px;
+    }
+
+    .footer-logo img {
+      width: 48px;
+    }
+  }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="header-top">
+    <h1>Match Results</h1>
+    <div class="logo">
+      Semington A Logo 5.jpg
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    /semington-a/index.htmlHome</a>
+    /semington-a/fixtures.htmlFixtures & Results</a>
+    /semington-a/match-results.htmlMatch Results</a>
+    /semington-a/tocatch.htmlTo Catch</a>
+    /semington-a/gallery.htmlGallery</a>
+    /semington-a/rules.htmlRules</a>
+  </div>
+</header>
+
+<main>
+
+  <div class="panel">
+    <div class="label">Filter by Match ID</div>
+    <select id="matchSelect">
+      <option value="">All Matches</option>
+    </select>
+    <div id="status"></div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Match ID</th>
+          <th>Match Details</th>
+          <th>Home or Away</th>
+          <th>Team Player</th>
+          <th>Total Score</th>
+          <th>Position<br>to be Dropped 10–1</th>
+          <th>Ducks</th>
+          <th>Spares</th>
+          <th>Legs Won</th>
+          <th>Top Score</th>
+          <th>League Avg</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+</main>
+
+<footer>
+  © Semington A Skittles Team
+  <div class="footer-logo">
+    Semington A Logo 5.jpg
+  </div>
+  
+</footer>
+<script src="/semington-a/match-results.js"></script>
+
+
+</body>
+</html>
