@@ -1,6 +1,6 @@
-// match-results.js — FULL FEATURE VERSION
-// RUNNING league average calculated match-by-match
-// NO arrow functions, NO backticks
+// match-results.js
+// Cumulative league average (adds previous matches)
+// Display newest match first, calculation oldest → newest
 
 function isLeague(details) {
   return /league/i.test(details || "");
@@ -34,20 +34,8 @@ function dateFromMatchId(id) {
 function parseCSV(text) {
   var lines = text.trim().split(/\r?\n/);
   var out = [];
-  for (var i = 0; i < lines.length; i++) {
-    out.push(lines[i].split(","));
-  }
+  for (var i = 0; i < lines.length; i++) out.push(lines[i].split(","));
   return out;
-}
-
-function moveANOtherLast(list) {
-  for (var i = 0; i < list.length; i++) {
-    if (list[i].player === "A N Other") {
-      list.push(list.splice(i, 1)[0]);
-      break;
-    }
-  }
-  return list;
 }
 
 var tbody  = document.getElementById("tableBody");
@@ -100,7 +88,7 @@ fetch("match_results.csv", { cache: "no-store" })
       }
       if (headerIndex !== -1) break;
     }
-    if (headerIndex === -1) throw new Error('Header row not found');
+    if (headerIndex === -1) throw new Error("Header row not found");
 
     var headers = [];
     for (i = 0; i < grid[headerIndex].length; i++) {
@@ -116,7 +104,6 @@ fetch("match_results.csv", { cache: "no-store" })
       for (j = 0; j < headers.length; j++) {
         o[headers[j]] = (rows[i][j] || "").trim();
       }
-
       if (!o["Match ID"] || !o["Team Player"]) continue;
 
       data.push({
@@ -139,7 +126,7 @@ fetch("match_results.csv", { cache: "no-store" })
       matchRows[data[i].matchId].push(data[i]);
     }
 
-    /* --- sort match IDs oldest → newest (REQUIRED for running avg) --- */
+    /* --- chronological order for calculation --- */
     var matchIds = [];
     for (var k in matchRows) matchIds.push(k);
 
@@ -152,7 +139,7 @@ fetch("match_results.csv", { cache: "no-store" })
       return da.getTime() - db.getTime();
     });
 
-    /* --- populate dropdown (newest first visually) --- */
+    /* --- populate dropdown newest first --- */
     while (select.options.length > 1) select.remove(1);
     for (i = matchIds.length - 1; i >= 0; i--) {
       var opt = document.createElement("option");
@@ -183,19 +170,23 @@ fetch("match_results.csv", { cache: "no-store" })
       resetRunningTotals();
       tbody.innerHTML = "";
 
-      var html = "";
+      var rowsRendered = [];
 
+      /* ✅ calculate in order (oldest → newest) */
       for (i = 0; i < matchIds.length; i++) {
         var id = matchIds[i];
         if (selectedMatch && id !== selectedMatch) continue;
 
         var block = matchRows[id];
         for (j = 0; j < block.length; j++) {
-          html += rowHtml(block[j]);
+          rowsRendered.push(rowHtml(block[j]));
         }
       }
 
-      tbody.innerHTML = html;
+      /* ✅ display newest first */
+      for (i = rowsRendered.length - 1; i >= 0; i--) {
+        tbody.insertAdjacentHTML("beforeend", rowsRendered[i]);
+      }
     }
 
     status.textContent =
@@ -212,4 +203,3 @@ fetch("match_results.csv", { cache: "no-store" })
     status.style.color = "red";
     status.textContent = e.message;
   });
-``
