@@ -1,6 +1,5 @@
-// fixtures.js
-// Robust loader for fixtures_web.csv
-// Shows ALL fixtures and ignores header rows safely
+// fixtures.js (robust)
+// Reads fixtures_web.csv and ignores header rows automatically
 
 function parseCSV(text) {
   return text
@@ -9,7 +8,6 @@ function parseCSV(text) {
     .map(line => line.split(","));
 }
 
-// Convert decimals to halves: 1.5 -> "1 1/2", 0.5 -> "1/2"
 function formatHalf(v) {
   const n = Number(v);
   if (!Number.isFinite(n)) return "";
@@ -26,11 +24,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const status = document.getElementById("status");
 
   if (!tbody || !status) {
-    console.error("Missing table body or status element");
+    console.error("Missing #tableBody or #status in fixtures.html");
     return;
   }
 
-  fetch("fixtures_web.csv", { cache: "no-store" })
+  // Cache-bust the CSV each load
+  const csvUrl = `fixtures_web.csv?v=${Date.now()}`;
+
+  fetch(csvUrl, { cache: "no-store" })
     .then(r => {
       if (!r.ok) throw new Error("fixtures_web.csv not found");
       return r.text();
@@ -39,9 +40,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const grid = parseCSV(text);
 
       const fixtures = grid
-        // ✅ only rows that start with a date like 29-Aug-25
+        // Keep only real date rows like 29-Aug-25
         .filter(r => r[0] && /\d{2}-[A-Za-z]{3}-\d{2}/.test(r[0]))
         .map(r => {
+          const date = r[0];
+          const day = r[1];
           const home = r[2];
           const away = r[8];
           const homePts = r[4];
@@ -53,8 +56,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
           return `
             <tr>
-              <td>${r[0]}</td>
-              <td>${r[1]}</td>
+              <td>${date}</td>
+              <td>${day}</td>
               <td>${home} vs ${away}</td>
               <td class="points">${points}</td>
               <td>${r[9] || ""}</td>
