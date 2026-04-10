@@ -31,17 +31,30 @@ fetch("fixtures_web.csv", { cache: "no-store" })
     return r.text();
   })
   .then(text => {
-    const grid = parseCSV(text);
+ const grid = parseCSV(text);
 
-    // ✅ YOUR FILE: header is ALWAYS on row index 3
-    const HEADER_ROW_INDEX = 3;
-    const DATA_START_INDEX = 4;
+const fixtures = grid
+  // ✅ keep rows where column 0 looks like a date: 29-Aug-25, 05-Sep-25 etc
+  .filter(r => r[0] && /\d{2}-[A-Za-z]{3}-\d{2}/.test(r[0]))
+  .map(r => {
+    const date = r[0];
+    const day = r[1];
+    const home = r[2];
+    const away = r[8];
+    const homePts = r[4];
+    const awayPts = r[6];
+    const points = homePts && awayPts ? `${formatHalf(homePts)}-${formatHalf(awayPts)}` : "";
 
-    const rows = grid.slice(DATA_START_INDEX);
-
-    const fixtures = rows
-      .filter(r => r[0] && r[0].includes("-")) // keep rows with a date like 29-Aug-25
-      .map(r => {
+    return {
+      date,
+      day,
+      fixture: `${home} vs ${away}`,
+      points,
+      venue: r[9] || "",
+      alley: r[10] || "",
+      competition: r[14] || ""
+    };
+  });
         const date = r[0];
         const day = r[1];
         const home = r[2];
