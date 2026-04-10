@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Gallery</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gallery</title>
 
-<style>
+  <style>
   body {
     margin: 0;
     min-height: 100vh;
@@ -15,77 +15,56 @@
     background-color: #f5f0e6;
   }
 
-  /* ===== Header ===== */
+  /* ===== HEADER ===== */
   header {
-    position: relative;
-    text-align: center;
-    padding: 20px 20px 16px;
-    /* Reserve space so the 300x300 logo never overlaps the content below */
-    min-height: 330px;
-    box-sizing: border-box;
+    padding: 20px;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   header h1 {
     margin: 0;
-    font-size: 48px;
+    font-size: 72px;
+    text-align: center;
+    flex: 1;
   }
 
-  /* Visitor counter */
-  .counter {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    background: #000;
-    color: #fff;
-    padding: 8px 14px;
-    border-radius: 6px;
-    font-size: 14px;
-  }
-
-  /* Logo top-right */
-  .logo {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-  }
   .logo img {
     width: 300px;
-    height: 300px;
-    object-fit: contain;
-    display: block;
+    height: auto;
   }
 
-  /* Navigation buttons */
   .nav-buttons {
-    margin-top: 18px;
+    margin-top: 15px;
+    text-align: center;
   }
-.nav-buttons a {
-  display: inline-block;
-  margin: 6px;
-  padding: 10px 18px;
-  background: #000;      /* black */
-  color: #fff;           /* white text */
-  text-decoration: none;
-  border-radius: 4px;
-  font-weight: bold;
-}
 
-.nav-buttons a:hover {
-  background: #333;      /* dark grey on hover */
-}
+  .nav-buttons a {
+    display: inline-block;
+    margin: 6px;
+    padding: 10px 18px;
+    background: #000;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+  }
 
   .nav-buttons a:hover {
     background: #163aa3;
   }
 
-  /* Page content */
+  /* ===== MAIN ===== */
   main {
     flex: 1;
     padding: 20px;
     text-align: center;
   }
 
-  /* Upload box */
   .upload-box {
     max-width: 800px;
     margin: 0 auto 20px;
@@ -93,25 +72,23 @@
     border-radius: 8px;
     padding: 18px;
     text-align: left;
-    box-sizing: border-box;
   }
+
   .upload-box h2 {
     margin: 0 0 10px;
     text-align: center;
   }
-  .upload-box p {
-    margin: 10px 0;
-  }
+
   .upload-box a {
     color: #1f4fd8;
     font-weight: bold;
     text-decoration: none;
   }
+
   .upload-box a:hover {
     text-decoration: underline;
   }
 
-  /* Embedded gallery frame (photos) */
   .gallery-frame {
     max-width: 1000px;
     width: 100%;
@@ -123,7 +100,18 @@
     display: block;
   }
 
-  /* Footer */
+  .gallery-copyright {
+    max-width: 900px;
+    margin: 30px auto 0;
+    padding: 12px 16px;
+    font-size: 12px;
+    color: #555;
+    background: #ffffffcc;
+    border-radius: 6px;
+    text-align: center;
+  }
+
+  /* ===== FOOTER ===== */
   footer {
     margin-top: auto;
     text-align: center;
@@ -131,147 +119,49 @@
     font-size: 12px;
     color: #555;
   }
-  .footer-logo {
-    margin-top: 10px;
-  }
+
   .footer-logo img {
-    width: 60px;     /* small “copyright logo” */
-    height: 60px;
-    object-fit: contain;
+    width: 60px;
     opacity: 0.9;
   }
 
+  /* ===== MOBILE ===== */
+  @media (max-width: 900px) {
+
+    .header-top {
+      flex-direction: column;
+      text-align: center;
+    }
 
     header h1 {
       font-size: 32px;
+      margin-top: 10px;
     }
+
     .logo img {
-      width: 180px;
-      height: 180px;
-    }
-    .counter {
-      position: static;
-      display: inline-block;
+      width: 150px;
       margin-bottom: 10px;
     }
+
     .gallery-frame {
       height: 520px;
     }
-  }
-/* Gallery copyright notice */
-.gallery-copyright {
-  max-width: 900px;
-  margin: 30px auto 0;
-  padding: 12px 16px;
-  font-size: 12px;
-  color: #555;
-  background: #ffffffcc;
-  border-radius: 6px;
-  text-align: center;
-}
 
-</style>
+    .footer-logo img {
+      width: 48px;
+    }
+  }
+  </style>
 </head>
 
 <body>
 
 <header>
-  <div class="counter">
-    Visitors: <span id="visitCount">0</span>
-  </div>
+  <div class="header-top">
+    <h1>Gallery</h1>
 
-  <h1>Semington A Skittles Team</h1>
+    <div class="logo">
 
-  <div class="logo">
-    <img src="Semington A Logo 5.jpg" alt="Semington A Logo" />
-  </div>
-
-  <div class="nav-buttons">
-  <a href="/semington-a/index.html">Home</a>
-  <a href="/semington-a/fixtures.html">Fixtures & Results</a>
-  <a href="/semington-a/match-results.html">Match Results</a>
-  <a href="/semington-a/tocatch.html">To Catch</a>
-  <a href="/semington-a/gallery.html">Gallery</a>
-  <a href="/semington-a/rules.html">Rules</a>
-</div>
-
-</header>
-<main>
-
-  <div class="upload-box">
-    <h2>Add Photos &amp; Videos</h2>
-    <p>
-      Players and supporters can upload photos and videos to the
-      Semington A Skittles Team Google Drive gallery.
-    </p>
-    <p>
-      <a href="https://drive.google.com/drive/folders/PASTE_FOLDER_ID_HERE"
-         target="_blank" rel="noopener">
-        Upload to the Team Gallery Folder
-      </a>
-    </p>
-    <p style="font-size:12px;color:#555;margin-bottom:0;">
-      Photos appear automatically below once uploaded.
-    </p>
-  </div>
-
-<h2>Gallery</h2>
-
-<iframe
-  class="gallery-frame"
-  src="https://drive.google.com/embeddedfolderview?id=17OBnLRGs-1xyobACJme9uGhrv63f0D9L#grid"
-  loading="lazy"
-  allowfullscreen>
-</iframe>
-
-  <h2 style="margin-top:30px;">Videos</h2>
-  <p>
-    Videos can be viewed directly from the gallery folder.
-  </p>
-  <p>
-    <a href="https://drive.google.com/drive/folders/PASTE_FOLDER_ID_HERE"
-       target="_blank" rel="noopener">
-      View Videos in Google Drive
-    </a>
-  </p>
-
-  <div class="gallery-copyright">
-    <p>
-      <strong>Copyright Notice</strong><br>
-      All images and videos displayed on this page are the property of
-      <strong>Semington A Skittles Team</strong> and may not be copied,
-      reused, or distributed without permission.
-    </p>
-  </div>
-
-</main>
-
-</main>
-
-<footer>
-  © Semington A Skittles Team
-  <div class="footer-logo">
-    <img src="Semington A Logo 5.jpg" alt="Semington A Logo" />
-  </div>
-</footer>
-
-<script>
-  // “Real” visitor counter for a static site: counts visits per device/browser.
-  // (A true global counter needs a server/database.)
-  let visits = localStorage.getItem("semingtonA_visits");
-  visits = visits ? Number(visits) + 1 : 1;
-  localStorage.setItem("semingtonA_visits", visits);
-  document.getElementById("visitCount").textContent = visits;
-</script>
-
-<!--
-UPDATE CHECKLIST:
-1) Team uploads photos/videos to the OneDrive Gallery folder.
-2) Photos appear automatically in the embedded Photo Gallery.
-3) Videos are viewed via the “View Videos on OneDrive” link for reliable playback.
--->
-</body>
-</html>
 
 
 
