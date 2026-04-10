@@ -1,130 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Fixtures & Results</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fixtures & Results</title>
 
-<style>
-  
-body {
-  margin: 0;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  font-family: Arial, sans-serif;
-  background-color: #f5f0e6;
-}
+  <style>
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+    background-color: #f5f0e6;
+  }
 
-/* ===== HEADER ===== */
-header {
-  padding: 20px;
-}
-
-/* Top row: title + logo */
-.header-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-/* Page title */
-header h1 {
-  margin: 0;
-  font-size: 48px;
-  text-align: center;
-  flex: 1;
-}
-
-/* Logo */
-.logo img {
-  width: 300px;
-  height: auto;
-}
-
-/* Navigation buttons */
-.nav-buttons {
-  margin-top: 15px;
-  text-align: center;
-}
-
-.nav-buttons a {
-  display: inline-block;
-  margin: 6px;
-  padding: 10px 18px;
-  background: #000;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 4px;
-  font-weight: bold;
-}
-
-.nav-buttons a:hover {
-  background: #163aa3;
-}
-
-/* ===== MAIN CONTENT ===== */
-main {
-  flex: 1;
-  padding: 20px;
-  text-align: center;
-}
-
-/* Centre image */
-.centre-image {
-  display: flex;
-  justify-content: center;
-  margin: 40px 0;
-}
-
-.centre-image img {
-  width: 600px;
-  max-width: 100%;
-  height: auto;
-}
-
-/* ===== FOOTER ===== */
-footer {
-  margin-top: auto;
-  text-align: center;
-  padding: 16px 20px 22px;
-  font-size: 12px;
-  color: #555;
-}
-
-.footer-logo img {
-  width: 60px;
-  height: auto;
-}
-
-/* ===== MOBILE (portrait + landscape) ===== */
-@media (max-width: 900px) {
+  /* ===== HEADER ===== */
+  header {
+    padding: 20px;
+  }
 
   .header-top {
-    flex-direction: column;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 
   header h1 {
-    font-size: 32px;
-    margin-top: 10px;
+    margin: 0;
+    font-size: 48px;
+    text-align: center;
+    flex: 1;
   }
 
   .logo img {
-    width: 150px;
-    margin-bottom: 10px;
+    width: 300px;
+    height: auto;
   }
 
   .nav-buttons {
     margin-top: 15px;
+    text-align: center;
+  }
+
+  .nav-buttons a {
+    display: inline-block;
+    margin: 6px;
+    padding: 10px 18px;
+    background: #000;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+  }
+
+  .nav-buttons a:hover {
+    background: #163aa3;
+  }
+
+  /* ===== MAIN CONTENT ===== */
+  main {
+    flex: 1;
+    padding: 20px;
+    text-align: center;
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    margin-top: auto;
+    text-align: center;
+    padding: 16px 20px 22px;
+    font-size: 12px;
+    color: #555;
   }
 
   .footer-logo img {
-    width: 48px;
+    width: 60px;
+    height: auto;
   }
-}e>
 
-</style>
+  /* ===== MOBILE (portrait + landscape) ===== */
+  @media (max-width: 900px) {
+
+    .header-top {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 32px;
+      margin-top: 10px;
+    }
+
+    .logo img {
+      width: 150px;
+      margin-bottom: 10px;
+    }
+
+    .nav-buttons {
+      margin-top: 15px;
+    }
+
+    .footer-logo img {
+      width: 48px;
+    }
+  }
+  </style>
 </head>
 
 <body>
@@ -132,7 +113,6 @@ footer {
 <header>
   <div class="header-top">
     <h1>Fixtures & Results</h1>
-
     <div class="logo">
       <img src="Semington A Logo 5.jpg" alt="Semington A Logo">
     </div>
@@ -149,42 +129,20 @@ footer {
 </header>
 
 <main>
-
-<div class="panel">
-  <div id="status"></div>
-</div>
-
-<div class="table-wrap">
-  <table>
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Day</Th>
-        <th>Fixture</th>
-        <th>Points</th>
-        <th>Venue</th>
-        <th>Alley</th>
-        <th>Competition</th>
-      </tr>
-    </thead>
-    <tbody id="tableBody"></tbody>
-  </table>
-</div>
-
+  <h2>Upcoming Fixtures</h2>
+  <p>Fixture details will appear here.</p>
 </main>
 
 <footer>
   © Semington A Skittles Team
   <div class="footer-logo">
-    <img src="Semington A Logo 5.jpg" alt="Logo">
+    <img src="Semington A Logo 5.jpg" alt="Semington A Logo">
   </div>
 </footer>
 
-<!-- ✅ FIXTURES SCRIPT -->
-<script src="fixtures.js"></script>
-
 </body>
 </html>
+``
 
 
 
