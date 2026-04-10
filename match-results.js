@@ -190,8 +190,13 @@ fetch("match_results.csv", { cache: "no-store" })
               "<td>" + (r._pos || "") + "</td>" +
               "<td>" + blankZero(r.ducks) + "</td>" +
               "<td>" + blankZero(r.spares) + "</td>" +
-              "<td>" + blankZero(r.legsWon) + "</td>" +
-              "<td>" + blankZero(r.top) + "</td>" +
+              "<td>" + poundBlankZero(r.legsWon) + "</td>" +
+              "<td>" + poundBlankZero(r.top) + "</td>" +
+              ``
+              function poundBlankZero(v) {
+              var n = toNum(v);
+              return isFinite(n) && n !== 0 ? "£" + n : "";
+              }
               "<td>" + (avgSnap[r.player] || "") + "</td>" +
             "</tr>"
           );
