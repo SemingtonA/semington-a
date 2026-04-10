@@ -192,7 +192,6 @@ fetch("match_results.csv", { cache: "no-store" })
               "<td>" + blankZero(r.spares) + "</td>" +
               "<td>" + poundBlankZero(r.legsWon) + "</td>" +
               "<td>" + poundBlankZero(r.top) + "</td>" +
-              ``
               function poundBlankZero(v) {
               var n = toNum(v);
               return isFinite(n) && n !== 0 ? "£" + n : "";
