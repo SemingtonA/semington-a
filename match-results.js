@@ -1,13 +1,13 @@
 // match-results.js — FULL FEATURE VERSION
-// Running league average (updates per match)
+// RUNNING league average calculated match-by-match
+// NO arrow functions, NO backticks
 
 function isLeague(details) {
   return /league/i.test(details || "");
 }
 
 function hz(v) {
-  v = (v === undefined || v === null) ? "" : String(v);
-  v = v.trim();
+  v = (v === undefined || v === null) ? "" : String(v).trim();
   return (v === "" || v === "0" || v === "0.00") ? "" : v;
 }
 
@@ -34,7 +34,9 @@ function dateFromMatchId(id) {
 function parseCSV(text) {
   var lines = text.trim().split(/\r?\n/);
   var out = [];
-  for (var i = 0; i < lines.length; i++) out.push(lines[i].split(","));
+  for (var i = 0; i < lines.length; i++) {
+    out.push(lines[i].split(","));
+  }
   return out;
 }
 
@@ -52,7 +54,7 @@ var tbody  = document.getElementById("tableBody");
 var select = document.getElementById("matchSelect");
 var status = document.getElementById("status");
 
-/* ✅ RUNNING TOTALS (this is the key change) */
+/* ===== RUNNING TOTALS ===== */
 var runningTotals = {};
 
 function resetRunningTotals() {
@@ -78,7 +80,7 @@ function runningLeagueAvg(details, player, score) {
   return avg.replace(/\.?0+$/, "");
 }
 
-fetch(new URL("match_results.csv", window.location.href).toString(), { cache: "no-store" })
+fetch("match_results.csv", { cache: "no-store" })
   .then(function (r) {
     if (!r.ok) throw new Error("CSV not found");
     return r.text();
@@ -87,54 +89,72 @@ fetch(new URL("match_results.csv", window.location.href).toString(), { cache: "n
 
     var grid = parseCSV(text);
 
+    /* --- find header row --- */
     var headerIndex = -1;
     for (var i = 0; i < grid.length; i++) {
       for (var j = 0; j < grid[i].length; j++) {
-        if (clean(grid[i][j]) === "Match ID") { headerIndex = i; break; }
+        if (clean(grid[i][j]) === "Match ID") {
+          headerIndex = i;
+          break;
+        }
       }
       if (headerIndex !== -1) break;
     }
     if (headerIndex === -1) throw new Error('Header row not found');
 
     var headers = [];
-    for (i = 0; i < grid[headerIndex].length; i++) headers.push(clean(grid[headerIndex][i]));
+    for (i = 0; i < grid[headerIndex].length; i++) {
+      headers.push(clean(grid[headerIndex][i]));
+    }
+
     var rows = grid.slice(headerIndex + 1);
 
+    /* --- normalize data --- */
     var data = [];
     for (i = 0; i < rows.length; i++) {
       var o = {};
-      for (j = 0; j < headers.length; j++) o[headers[j]] = (rows[i][j] || "").trim();
+      for (j = 0; j < headers.length; j++) {
+        o[headers[j]] = (rows[i][j] || "").trim();
+      }
+
       if (!o["Match ID"] || !o["Team Player"]) continue;
+
       data.push({
-        matchId: o["Match ID"],
-        details: o["Match Details"],
+        matchId:  o["Match ID"],
+        details:  o["Match Details"],
         homeAway: o["Home or Away"],
-        player: o["Team Player"],
-        score: o["Total Score"],
-        ducks: o["Ducks"],
-        spares: o["Spares"],
-        legsWon: o["Legs Won"],
-        top: o["Top Score"]
+        player:   o["Team Player"],
+        score:    o["Total Score"],
+        ducks:    o["Ducks"],
+        spares:   o["Spares"],
+        legsWon:  o["Legs Won"],
+        top:      o["Top Score"]
       });
     }
 
+    /* --- group by match --- */
     var matchRows = {};
     for (i = 0; i < data.length; i++) {
       if (!matchRows[data[i].matchId]) matchRows[data[i].matchId] = [];
       matchRows[data[i].matchId].push(data[i]);
     }
 
+    /* --- sort match IDs oldest → newest (REQUIRED for running avg) --- */
     var matchIds = [];
     for (var k in matchRows) matchIds.push(k);
+
     matchIds.sort(function (a, b) {
       var da = dateFromMatchId(a);
       var db = dateFromMatchId(b);
-      if (!da || !db) return 0;
-      return da - db;
+      if (!da && !db) return 0;
+      if (!da) return -1;
+      if (!db) return 1;
+      return da.getTime() - db.getTime();
     });
 
+    /* --- populate dropdown (newest first visually) --- */
     while (select.options.length > 1) select.remove(1);
-    for (i = 0; i < matchIds.length; i++) {
+    for (i = matchIds.length - 1; i >= 0; i--) {
       var opt = document.createElement("option");
       opt.value = matchIds[i];
       opt.textContent = matchIds[i];
@@ -143,11 +163,12 @@ fetch(new URL("match_results.csv", window.location.href).toString(), { cache: "n
 
     function rowHtml(r) {
       var avg = runningLeagueAvg(r.details, r.player, r.score);
+
       return "<tr>" +
         "<td>" + r.matchId + "</td>" +
-        "<td>" + r.details + "</td>" +
-        "<td>" + r.homeAway + "</td>" +
-        "<td>" + r.player + "</td>" +
+        "<td>" + (r.details || "") + "</td>" +
+        "<td>" + (r.homeAway || "") + "</td>" +
+        "<td>" + (r.player || "") + "</td>" +
         "<td>" + hz(r.score) + "</td>" +
         "<td></td>" +
         "<td>" + hz(r.ducks) + "</td>" +
@@ -158,23 +179,28 @@ fetch(new URL("match_results.csv", window.location.href).toString(), { cache: "n
       "</tr>";
     }
 
-    function render(matchId) {
+    function render(selectedMatch) {
       resetRunningTotals();
       tbody.innerHTML = "";
 
       var html = "";
+
       for (i = 0; i < matchIds.length; i++) {
         var id = matchIds[i];
-        if (matchId && id !== matchId) continue;
+        if (selectedMatch && id !== selectedMatch) continue;
+
         var block = matchRows[id];
         for (j = 0; j < block.length; j++) {
           html += rowHtml(block[j]);
         }
       }
+
       tbody.innerHTML = html;
     }
 
-    status.textContent = "Loaded " + data.length + " rows.";
+    status.textContent =
+      "Loaded " + data.length + " rows. Matches: " + matchIds.length + ".";
+
     render("");
 
     select.addEventListener("change", function () {
@@ -186,3 +212,4 @@ fetch(new URL("match_results.csv", window.location.href).toString(), { cache: "n
     status.style.color = "red";
     status.textContent = e.message;
   });
+``
