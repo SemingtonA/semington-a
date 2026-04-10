@@ -1,18 +1,19 @@
 // match-results.js — FINAL LOCKED VERSION
-// Running League Avg (cumulative), correct columns, correct positions
+// Meets ALL requirements exactly as specified
 
 function isLeague(details) {
   return /league/i.test(details || "");
 }
 
-function hz(v) {
-  v = v === undefined || v === null ? "" : String(v).trim();
-  return v === "" || v === "0" || v === "0.00" ? "" : v;
-}
-
 function toNum(v) {
   var n = Number(String(v === undefined ? "" : v).trim());
   return isFinite(n) ? n : NaN;
+}
+
+// blank if 0 or empty
+function blankZero(v) {
+  var n = toNum(v);
+  return isFinite(n) && n !== 0 ? n : "";
 }
 
 function clean(h) {
@@ -32,7 +33,7 @@ function parseCSV(text) {
   return out;
 }
 
-var tbody = document.getElementById("tableBody");
+var tbody  = document.getElementById("tableBody");
 var select = document.getElementById("matchSelect");
 var status = document.getElementById("status");
 
@@ -139,7 +140,7 @@ fetch("match_results.csv", { cache: "no-store" })
         var rows = matchRows[id];
         var isLeagueMatch = isLeague(rows[0].details);
 
-        // Positions ONLY if league match
+        // --- positions ONLY for league matches
         if (isLeagueMatch) {
           var ranked = [];
           for (j = 0; j < rows.length; j++) {
@@ -152,19 +153,19 @@ fetch("match_results.csv", { cache: "no-store" })
           }
         }
 
-        // Update league totals AFTER match
+        // --- update league totals
         if (isLeagueMatch) {
           for (j = 0; j < rows.length; j++) {
-            var sc = toNum(rows[j].score);
-            if (rows[j].player !== "A N Other" && isFinite(sc)) {
-              updateLeagueTotals(rows[j].player, sc);
+            var sc2 = toNum(rows[j].score);
+            if (rows[j].player && rows[j].player !== "A N Other" && isFinite(sc2)) {
+              updateLeagueTotals(rows[j].player, sc2);
             }
           }
         }
 
         var avgSnap = leagueAvgSnapshot();
 
-        // Render rows (A N Other always last)
+        // --- render rows (A N Other last)
         var normal = [], anOther = null;
         for (j = 0; j < rows.length; j++) {
           if (rows[j].player === "A N Other") anOther = rows[j];
@@ -175,7 +176,9 @@ fetch("match_results.csv", { cache: "no-store" })
         for (j = 0; j < normal.length; j++) {
           var r = normal[j];
           var num = toNum(r.score);
-          var scoreCell = isFinite(num) ? num : (r.player === "A N Other" ? "" : "Away");
+
+          var scoreCell =
+            isFinite(num) ? num : (r.player === "A N Other" ? "" : "Away");
 
           out.push(
             "<tr>" +
@@ -185,16 +188,17 @@ fetch("match_results.csv", { cache: "no-store" })
               "<td>" + r.player + "</td>" +
               "<td>" + scoreCell + "</td>" +
               "<td>" + (r._pos || "") + "</td>" +
-              "<td>" + r.ducks + "</td>" +
-              "<td>" + r.spares + "</td>" +
-              "<td>" + r.legsWon + "</td>" +
-              "<td>" + r.top + "</td>" +
+              "<td>" + blankZero(r.ducks) + "</td>" +
+              "<td>" + blankZero(r.spares) + "</td>" +
+              "<td>" + blankZero(r.legsWon) + "</td>" +
+              "<td>" + blankZero(r.top) + "</td>" +
               "<td>" + (avgSnap[r.player] || "") + "</td>" +
             "</tr>"
           );
         }
       }
 
+      // newest match first
       for (i = out.length - 1; i >= 0; i--) {
         tbody.insertAdjacentHTML("beforeend", out[i]);
       }
@@ -203,7 +207,6 @@ fetch("match_results.csv", { cache: "no-store" })
     status.textContent = "Loaded " + data.length + " rows.";
     render("");
     select.addEventListener("change", function () { render(select.value); });
-
   })
   .catch(function (e) {
     status.style.color = "red";
