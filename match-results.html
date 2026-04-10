@@ -1,119 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Match Results</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Match Results</title>
 
-<style>
-body{margin:0;min-height:100vh;display:flex;flex-direction:column;font-family:Arial,sans-serif;background:#f5f0e6}
+  <style>
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+    background-color: #f5f0e6;
+  }
 
-/* Header */
-header{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:20px}
-.header-center{text-align:center}
-.header-center h1{margin:0;font-size:48px}
-.header-right{text-align:right}
-.header-right img{width:300px;height:auto}
+  /* ===== HEADER ===== */
+  header {
+    padding: 20px;
+  }
 
-/* Nav (black buttons) */
-.nav-buttons{margin-top:12px;text-align:center}
-.nav-buttons a{display:inline-block;margin:6px;padding:10px 18px;background:#000;color:#fff;text-decoration:none;border-radius:4px;font-weight:bold}
-.nav-buttons a:hover{background:#333}
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 
-/* Main */
-main{flex:1;padding:20px}
-.panel{max-width:1400px;margin:10px auto 14px;background:#ffffffcc;border-radius:8px;padding:12px}
-.label{font-size:12px;font-weight:bold;color:#333;margin-bottom:6px}
-select{width:100%;padding:8px;border-radius:6px;border:1px solid #ccc}
-#status{margin-top:8px;font-size:12px;color:#555}
+  header h1 {
+    margin: 0;
+    font-size: 60px; /* matches your new header size */
+    text-align: center;
+    flex: 1;
+  }
 
-/* Table */
-.table-wrap{max-width:1400px;margin:0 auto;background:#fff;border-radius:8px;padding:12px;overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:14px}
-th{
-  border-bottom:1px solid #eee;
-  padding:8px;
-  white-space:normal;   /* ✅ allow header wrapping */
-  text-align:center;
-}
+  .logo img {
+    width: 300px;
+    height: auto;
+  }
 
-td{
-  border-bottom:1px solid #eee;
-  padding:8px;
-  white-space:nowrap;   /* ✅ keep data on one line */
-  text-align:center;
-}
-th{background:#fafafa}
+  .nav-buttons {
+    margin-top: 15px;
+    text-align: center;
+  }
 
-/* Left align Match ID + Team Player */
-td:nth-child(1),th:nth-child(1),
-td:nth-child(4),th:nth-child(4){text-align:left}
+  .nav-buttons a {
+    display: inline-block;
+    margin: 6px;
+    padding: 10px 18px;
+    background: #000;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+  }
 
-/* Footer */
-footer{margin-top:auto;text-align:center;padding:16px 20px 22px;font-size:12px;color:#555}
-.footer-logo img{width:60px;opacity:.9}
-</style>
-</head>
+  .nav-buttons a:hover {
+    background: #163aa3;
+  }
 
-<body>
+  /* ===== MAIN ===== */
+  main {
+    flex: 1;
+    padding: 20px;
+  }
 
-<header>
-<div class="nav-buttons">
-  <a href="/semington-a/index.html">Home</a>
-  <a href="/semington-a/fixtures.html">Fixtures & Results</a>
-  <a href="/semington-a/match-results.html">Match Results</a>
-  <a href="/semington-a/tocatch.html">To Catch</a>
-  <a href="/semington-a/gallery.html">Gallery</a>
-  <a href="/semington-a/rules.html">Rules</a>
-</div>
-  </div>
-  <div class="header-right">
-    <img src="Semington A Logo 5.jpg" alt="Semington A Logo">
-  </div>
-</header>
+  .panel {
+    max-width: 1400px;
+    margin: 10px auto 14px;
+    background: #ffffffcc;
+    border-radius: 8px;
+    padding: 12px;
+  }
 
-<main>
+  .label {
+    font-size: 12px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 6px;
+  }
 
-<div class="panel">
-  <div class="label">Filter by Match ID</div>
-  <select id="matchSelect">
-    <option value="">All Matches</option>
-  </select>
-  <div id="status"></div>
-</div>
+  select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
 
-<div class="table-wrap">
-<table>
-<thead>
-<tr>
-  <th>Match ID</th>
-  <th>Match Details</th>
-  <th>Home or Away</th>
-  <th>Team Player</th>
-  <th>Total Score</th>
-  <th>Position<br>to be Dropped 10-1</th>
-  <th>Ducks</th>
-  <th>Spares</th>
-  <th>Legs Won</th>
-  <th>Top Score</th>
-  <th>League Avg</th>
-</tr>
-</thead>
-<tbody id="tableBody"></tbody>
-</table>
-</div>
+  #status {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #555;
+  }
 
-</main>
+  .table-wrap {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 8px;
+    padding: 12px;
+    overflow-x: auto;
+  }
 
-<footer>
-  © Semington A Skittles Team
-  <div class="footer-logo">
-    <img src="Semington A Logo 5.jpg" alt="Logo">
-  </div>
-</footer>
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
 
-<!-- ✅ THIS IS THE JAVASCRIPT LINK -->
-<script src="match-results.js"></script>
+  th {
+    border-bottom: 1px solid #eee;
+    padding: 8px;
+    white-space: normal;
+    text-align: center;
+    background: #fafafa;
+  }
 
-</body>
-</html>
+  td {
+    border-bottom: 1px solid #eee;
+    padding: 8px;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  /* Left align Match ID + Team Player */
+  td:nth-child(1), th:nth-child(1),
+  td:nth-child(4), th:nth-child(4) {
+    text-align: left;
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    margin-top: auto;
+    text-align: center;
+    padding: 16px 20px 22px;
+    font-size: 12px;
+    color: #555;
+  }
+
+  .footer-logo img {
+    width: 60px;
+    opacity: 0.9;
+  }
+
+  /* ===== MOBILE (portrait + landscape) ===== */
+  @media (max-width: 900px) {
+
+    .header-top {
+      flex-direction: column;
+
