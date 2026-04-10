@@ -1,13 +1,13 @@
-// match-results.js — FINAL, CORRECT VERSION
-// Running League Avg per match, correct positions, Away + A N Other rules enforced
+// match-results.js — FINAL LOCKED VERSION
+// Running League Avg (cumulative), correct columns, correct positions
 
 function isLeague(details) {
   return /league/i.test(details || "");
 }
 
 function hz(v) {
-  v = (v === undefined || v === null) ? "" : String(v).trim();
-  return (v === "" || v === "0" || v === "0.00") ? "" : v;
+  v = v === undefined || v === null ? "" : String(v).trim();
+  return v === "" || v === "0" || v === "0.00" ? "" : v;
 }
 
 function toNum(v) {
@@ -32,36 +32,27 @@ function parseCSV(text) {
   return out;
 }
 
-var tbody  = document.getElementById("tableBody");
+var tbody = document.getElementById("tableBody");
 var select = document.getElementById("matchSelect");
 var status = document.getElementById("status");
 
 /* ===== RUNNING LEAGUE TOTALS ===== */
-var runningTotals = {};
+var leagueTotals = {};
 
-function resetRunningTotals() {
-  runningTotals = {};
+function resetLeagueTotals() {
+  leagueTotals = {};
 }
 
-function updateRunningTotals(details, player, score) {
-  if (!isLeague(details)) return;
-  if (!player || player === "A N Other") return;
-
-  var s = toNum(score);
-  if (!isFinite(s)) return;
-
-  if (!runningTotals[player]) {
-    runningTotals[player] = { games: 0, total: 0 };
-  }
-
-  runningTotals[player].games += 1;
-  runningTotals[player].total += s;
+function updateLeagueTotals(player, score) {
+  if (!leagueTotals[player]) leagueTotals[player] = { games: 0, total: 0 };
+  leagueTotals[player].games += 1;
+  leagueTotals[player].total += score;
 }
 
 function leagueAvgSnapshot() {
   var snap = {};
-  for (var p in runningTotals) {
-    var t = runningTotals[p];
+  for (var p in leagueTotals) {
+    var t = leagueTotals[p];
     snap[p] = t.games
       ? (t.total / t.games).toFixed(3).replace(/\.?0+$/, "")
       : "";
@@ -102,7 +93,11 @@ fetch("match_results.csv", { cache: "no-store" })
         details:  o["Match Details"],
         homeAway: o["Home or Away"],
         player:   o["Team Player"],
-        score:    o["Total Score"]
+        score:    o["Total Score"],
+        ducks:    o["Ducks"],
+        spares:   o["Spares"],
+        legsWon:  o["Legs Won"],
+        top:      o["Top Score"]
       });
     }
 
@@ -133,7 +128,7 @@ fetch("match_results.csv", { cache: "no-store" })
     }
 
     function render(selectedMatch) {
-      resetRunningTotals();
+      resetLeagueTotals();
       tbody.innerHTML = "";
       var out = [];
 
@@ -142,26 +137,34 @@ fetch("match_results.csv", { cache: "no-store" })
         if (selectedMatch && id !== selectedMatch) continue;
 
         var rows = matchRows[id];
+        var isLeagueMatch = isLeague(rows[0].details);
 
-        // ---- positions per match
-        var played = [];
-        for (j = 0; j < rows.length; j++) {
-          var sc = toNum(rows[j].score);
-          if (isFinite(sc)) played.push({ idx: j, score: sc });
-        }
-        played.sort(function (a, b) { return b.score - a.score; });
-        for (j = 0; j < played.length; j++) {
-          rows[played[j].idx]._pos = j + 1;
+        // Positions ONLY if league match
+        if (isLeagueMatch) {
+          var ranked = [];
+          for (j = 0; j < rows.length; j++) {
+            var sc = toNum(rows[j].score);
+            if (isFinite(sc)) ranked.push({ idx: j, score: sc });
+          }
+          ranked.sort(function (a, b) { return b.score - a.score; });
+          for (j = 0; j < ranked.length; j++) {
+            rows[ranked[j].idx]._pos = j + 1;
+          }
         }
 
-        // ---- update running totals AFTER match
-        for (j = 0; j < rows.length; j++) {
-          updateRunningTotals(rows[j].details, rows[j].player, rows[j].score);
+        // Update league totals AFTER match
+        if (isLeagueMatch) {
+          for (j = 0; j < rows.length; j++) {
+            var sc = toNum(rows[j].score);
+            if (rows[j].player !== "A N Other" && isFinite(sc)) {
+              updateLeagueTotals(rows[j].player, sc);
+            }
+          }
         }
 
         var avgSnap = leagueAvgSnapshot();
 
-        // ---- render rows (A N Other last)
+        // Render rows (A N Other always last)
         var normal = [], anOther = null;
         for (j = 0; j < rows.length; j++) {
           if (rows[j].player === "A N Other") anOther = rows[j];
@@ -171,9 +174,8 @@ fetch("match_results.csv", { cache: "no-store" })
 
         for (j = 0; j < normal.length; j++) {
           var r = normal[j];
-          var scoreNum = toNum(r.score);
-          var scoreCell =
-            isFinite(scoreNum) ? scoreNum : (r.player === "A N Other" ? "" : "Away");
+          var num = toNum(r.score);
+          var scoreCell = isFinite(num) ? num : (r.player === "A N Other" ? "" : "Away");
 
           out.push(
             "<tr>" +
@@ -183,6 +185,10 @@ fetch("match_results.csv", { cache: "no-store" })
               "<td>" + r.player + "</td>" +
               "<td>" + scoreCell + "</td>" +
               "<td>" + (r._pos || "") + "</td>" +
+              "<td>" + r.ducks + "</td>" +
+              "<td>" + r.spares + "</td>" +
+              "<td>" + r.legsWon + "</td>" +
+              "<td>" + r.top + "</td>" +
               "<td>" + (avgSnap[r.player] || "") + "</td>" +
             "</tr>"
           );
