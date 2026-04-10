@@ -1,6 +1,5 @@
 // match-results.js
-// Cumulative league average (adds previous matches)
-// Display newest match first, calculation oldest → newest
+// FINAL VERSION: running league average + correct positions + newest-first display
 
 function isLeague(details) {
   return /league/i.test(details || "");
@@ -14,11 +13,6 @@ function hz(v) {
 function toNum(v) {
   var n = Number(String(v === undefined ? "" : v).trim());
   return isFinite(n) ? n : NaN;
-}
-
-function pound(v) {
-  var t = hz(v);
-  return t ? ("£" + t) : "";
 }
 
 function clean(h) {
@@ -42,7 +36,7 @@ var tbody  = document.getElementById("tableBody");
 var select = document.getElementById("matchSelect");
 var status = document.getElementById("status");
 
-/* ===== RUNNING TOTALS ===== */
+/* ===== RUNNING LEAGUE TOTALS ===== */
 var runningTotals = {};
 
 function resetRunningTotals() {
@@ -51,6 +45,7 @@ function resetRunningTotals() {
 
 function runningLeagueAvg(details, player, score) {
   if (!isLeague(details)) return "";
+  if (!player || player === "A N Other") return "";
 
   if (!runningTotals[player]) {
     runningTotals[player] = { games: 0, total: 0 };
@@ -77,33 +72,25 @@ fetch("match_results.csv", { cache: "no-store" })
 
     var grid = parseCSV(text);
 
-    /* --- find header row --- */
+    /* ---- locate header ---- */
     var headerIndex = -1;
     for (var i = 0; i < grid.length; i++) {
       for (var j = 0; j < grid[i].length; j++) {
-        if (clean(grid[i][j]) === "Match ID") {
-          headerIndex = i;
-          break;
-        }
+        if (clean(grid[i][j]) === "Match ID") { headerIndex = i; break; }
       }
       if (headerIndex !== -1) break;
     }
     if (headerIndex === -1) throw new Error("Header row not found");
 
     var headers = [];
-    for (i = 0; i < grid[headerIndex].length; i++) {
-      headers.push(clean(grid[headerIndex][i]));
-    }
-
+    for (i = 0; i < grid[headerIndex].length; i++) headers.push(clean(grid[headerIndex][i]));
     var rows = grid.slice(headerIndex + 1);
 
-    /* --- normalize data --- */
+    /* ---- normalise rows ---- */
     var data = [];
     for (i = 0; i < rows.length; i++) {
       var o = {};
-      for (j = 0; j < headers.length; j++) {
-        o[headers[j]] = (rows[i][j] || "").trim();
-      }
+      for (j = 0; j < headers.length; j++) o[headers[j]] = (rows[i][j] || "").trim();
       if (!o["Match ID"] || !o["Team Player"]) continue;
 
       data.push({
@@ -111,22 +98,18 @@ fetch("match_results.csv", { cache: "no-store" })
         details:  o["Match Details"],
         homeAway: o["Home or Away"],
         player:   o["Team Player"],
-        score:    o["Total Score"],
-        ducks:    o["Ducks"],
-        spares:   o["Spares"],
-        legsWon:  o["Legs Won"],
-        top:      o["Top Score"]
+        score:    o["Total Score"]
       });
     }
 
-    /* --- group by match --- */
+    /* ---- group by match ---- */
     var matchRows = {};
     for (i = 0; i < data.length; i++) {
       if (!matchRows[data[i].matchId]) matchRows[data[i].matchId] = [];
       matchRows[data[i].matchId].push(data[i]);
     }
 
-    /* --- chronological order for calculation --- */
+    /* ---- chronological order for calculations ---- */
     var matchIds = [];
     for (var k in matchRows) matchIds.push(k);
 
@@ -136,10 +119,10 @@ fetch("match_results.csv", { cache: "no-store" })
       if (!da && !db) return 0;
       if (!da) return -1;
       if (!db) return 1;
-      return da.getTime() - db.getTime();
+      return da - db;
     });
 
-    /* --- populate dropdown newest first --- */
+    /* ---- dropdown newest first ---- */
     while (select.options.length > 1) select.remove(1);
     for (i = matchIds.length - 1; i >= 0; i--) {
       var opt = document.createElement("option");
@@ -148,20 +131,17 @@ fetch("match_results.csv", { cache: "no-store" })
       select.appendChild(opt);
     }
 
-    function rowHtml(r) {
-      var avg = runningLeagueAvg(r.details, r.player, r.score);
+    function rowHtml(r, position, avg) {
+      var scoreNum = toNum(r.score);
+      var scoreCell = isFinite(scoreNum) ? scoreNum : (r.player === "A N Other" ? "" : "Away");
 
       return "<tr>" +
         "<td>" + r.matchId + "</td>" +
         "<td>" + (r.details || "") + "</td>" +
         "<td>" + (r.homeAway || "") + "</td>" +
-        "<td>" + (r.player || "") + "</td>" +
-        "<td>" + hz(r.score) + "</td>" +
-        "<td></td>" +
-        "<td>" + hz(r.ducks) + "</td>" +
-        "<td>" + hz(r.spares) + "</td>" +
-        "<td>" + pound(r.legsWon) + "</td>" +
-        "<td>" + pound(r.top) + "</td>" +
+        "<td>" + r.player + "</td>" +
+        "<td>" + scoreCell + "</td>" +
+        "<td>" + (position || "") + "</td>" +
         "<td>" + avg + "</td>" +
       "</tr>";
     }
@@ -170,28 +150,41 @@ fetch("match_results.csv", { cache: "no-store" })
       resetRunningTotals();
       tbody.innerHTML = "";
 
-      var rowsRendered = [];
+      var rendered = [];
 
-      /* ✅ calculate in order (oldest → newest) */
       for (i = 0; i < matchIds.length; i++) {
         var id = matchIds[i];
         if (selectedMatch && id !== selectedMatch) continue;
 
         var block = matchRows[id];
+        var scored = [];
+
         for (j = 0; j < block.length; j++) {
-          rowsRendered.push(rowHtml(block[j]));
+          var r = block[j];
+          var avg = runningLeagueAvg(r.details, r.player, r.score);
+          var scoreNum = toNum(r.score);
+          if (isFinite(scoreNum)) scored.push({ idx: j, score: scoreNum });
+          block[j]._avg = avg;
+        }
+
+        scored.sort(function (a, b) { return b.score - a.score; });
+
+        for (j = 0; j < scored.length; j++) {
+          block[scored[j].idx]._pos = j + 1;
+        }
+
+        for (j = 0; j < block.length; j++) {
+          var rr = block[j];
+          rendered.push(rowHtml(rr, rr._pos, rr._avg));
         }
       }
 
-      /* ✅ display newest first */
-      for (i = rowsRendered.length - 1; i >= 0; i--) {
-        tbody.insertAdjacentHTML("beforeend", rowsRendered[i]);
+      for (i = rendered.length - 1; i >= 0; i--) {
+        tbody.insertAdjacentHTML("beforeend", rendered[i]);
       }
     }
 
-    status.textContent =
-      "Loaded " + data.length + " rows. Matches: " + matchIds.length + ".";
-
+    status.textContent = "Loaded " + data.length + " rows.";
     render("");
 
     select.addEventListener("change", function () {
