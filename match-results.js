@@ -99,30 +99,34 @@ fetch(new URL("match_results.csv", window.location.href).toString(), { cache: "n
         avg:      o["League Averages"] || o["League Avg"] || o["League Average"] || ""
       });
     }
+// RUNNING league averages, match by match
+var runningTotals = {}; // player -> {games,total}
 
-    // league averages season-to-date
-    var leagueStats = {}; // player -> {games,total}
-    for (i = 0; i < data.length; i++) {
-      var r0 = data[i];
-      if (!isLeague(r0.details)) continue;
-      var s0 = toNum(r0.score);
-      if (!isFinite(s0)) continue;
+// reset totals helper (used when re-rendering)
+function resetRunningTotals() {
+  runningTotals = {};
+}
 
-      if (!leagueStats[r0.player]) leagueStats[r0.player] = { games: 0, total: 0 };
-      leagueStats[r0.player].games += 1;
-      leagueStats[r0.player].total += s0;
-    }
+function runningLeagueAvg(details, player, score) {
+  if (!isLeague(details)) return "";
 
-    function leagueAvg(player) {
-      var p = leagueStats[player];
-      if (!p || p.games === 0) return "";
-      var v = (p.total / p.games).toFixed(3);
-      return v.replace(/\.?0+$/, "");
-    }
+  if (!runningTotals[player]) {
+    runningTotals[player] = { games: 0, total: 0 };
+  }
 
-    function avgText(details, player, fallback) {
-      return isLeague(details) ? leagueAvg(player) : hz(fallback);
-    }
+  var s = toNum(score);
+  if (isFinite(s)) {
+    runningTotals[player].games += 1;
+    runningTotals[player].total += s;
+  }
+
+  if (runningTotals[player].games === 0) return "";
+
+  var avg = (runningTotals[player].total / runningTotals[player].games).toFixed(3);
+  return avg.replace(/\.?0+$/, "");
+}
+
+
 
     // roster = all players who ever appear (exclude placeholder "Away")
     var rosterMap = {};
