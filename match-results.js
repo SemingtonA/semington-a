@@ -146,50 +146,85 @@ fetch("match_results.csv", { cache: "no-store" })
       "</tr>";
     }
 
-    function render(selectedMatch) {
-      resetRunningTotals();
-      tbody.innerHTML = "";
+function render(selectedMatch) {
+  resetRunningTotals();
+  tbody.innerHTML = "";
 
-      var rendered = [];
+  var rendered = [];
 
-      for (i = 0; i < matchIds.length; i++) {
-        var id = matchIds[i];
-        if (selectedMatch && id !== selectedMatch) continue;
+  // --- process matches in chronological order (oldest → newest)
+  for (var i = 0; i < matchIds.length; i++) {
+    var matchId = matchIds[i];
+    if (selectedMatch && matchId !== selectedMatch) continue;
 
-        var block = matchRows[id];
-        var scored = [];
+    var rows = matchRows[matchId];
 
-        for (j = 0; j < block.length; j++) {
-          var r = block[j];
-          var avg = runningLeagueAvg(r.details, r.player, r.score);
-          var scoreNum = toNum(r.score);
-          if (isFinite(scoreNum)) scored.push({ idx: j, score: scoreNum });
-          block[j]._avg = avg;
-        }
-
-        scored.sort(function (a, b) { return b.score - a.score; });
-
-        for (j = 0; j < scored.length; j++) {
-          block[scored[j].idx]._pos = j + 1;
-        }
-
-        for (j = 0; j < block.length; j++) {
-          var rr = block[j];
-          rendered.push(rowHtml(rr, rr._pos, rr._avg));
-        }
-      }
-
-      for (i = rendered.length - 1; i >= 0; i--) {
-        tbody.insertAdjacentHTML("beforeend", rendered[i]);
-      }
+    // --- FIRST: calculate match positions (score high → low)
+    var played = [];
+    for (var j = 0; j < rows.length; j++) {
+      var s = toNum(rows[j].score);
+      if (isFinite(s)) played.push({ idx: j, score: s });
+    }
+    played.sort(function (a, b) { return b.score - a.score; });
+    for (j = 0; j < played.length; j++) {
+      rows[played[j].idx]._pos = j + 1;
     }
 
-    status.textContent = "Loaded " + data.length + " rows.";
-    render("");
+    // --- SECOND: update running league totals (once per row)
+    for (j = 0; j < rows.length; j++) {
+      runningLeagueAvg(rows[j].details, rows[j].player, rows[j].score);
+    }
 
-    select.addEventListener("change", function () {
-      render(select.value);
-    });
+    // --- THIRD: compute league avg ONCE for this match
+    var leagueAvgByPlayer = {};
+    for (var p in runningTotals) {
+      var t = runningTotals[p];
+      leagueAvgByPlayer[p] =
+        t.games ? (t.total / t.games).toFixed(3).replace(/\.?0+$/, "") : "";
+    }
+
+    // --- FOURTH: render rows (A N Other forced last)
+    var normal = [], anOther = null;
+    for (j = 0; j < rows.length; j++) {
+      if (rows[j].player === "A N Other") {
+        anOther = rows[j];
+      } else {
+        normal.push(rows[j]);
+      }
+    }
+    if (anOther) normal.push(anOther);
+
+    for (j = 0; j < normal.length; j++) {
+      var r = normal[j];
+      var scoreNum = toNum(r.score);
+
+      var scoreCell =
+        isFinite(scoreNum)
+          ? scoreNum
+          : (r.player === "A N Other" ? "" : "Away");
+
+      var avg =
+        leagueAvgByPlayer[r.player] || "";
+
+      rendered.push(
+        "<tr>" +
+          "<td>" + r.matchId + "</td>" +
+          "<td>" + (r.details || "") + "</td>" +
+          "<td>" + (r.homeAway || "") + "</td>" +
+          "<td>" + r.player + "</td>" +
+          "<td>" + scoreCell + "</td>" +
+          "<td>" + (r._pos || "") + "</td>" +
+          "<td>" + avg + "</td>" +
+        "</tr>"
+      );
+    }
+  }
+
+  // --- newest match first in display
+  for (i = rendered.length - 1; i >= 0; i--) {
+    tbody.insertAdjacentHTML("beforeend", rendered[i]);
+  }
+}
 
   })
   .catch(function (e) {
