@@ -1,77 +1,50 @@
-// fixtures.js (robust)
-// Reads fixtures_web.csv and ignores header rows automatically
-
 function parseCSV(text) {
-  return text
-    .replace(/^\uFEFF/, "")
-    .split(/\r?\n/)
-    .map(line => line.split(","));
+  var lines = text.replace(/^\uFEFF/, "").split(/\r?\n/);
+  return lines.map(function (line) {
+    return line.split(",");
+  });
 }
 
-function formatHalf(v) {
-  const n = Number(v);
-  if (!Number.isFinite(n)) return "";
-  const whole = Math.floor(n);
-  const frac = n - whole;
-  if (Math.abs(frac - 0.5) < 0.001) {
-    return whole > 0 ? `${whole} 1/2` : `1/2`;
-  }
-  return String(n);
-}
+var tbody = document.getElementById("tableBody");
+var status = document.getElementById("status");
 
-document.addEventListener("DOMContentLoaded", () => {
-  const tbody = document.getElementById("tableBody");
-  const status = document.getElementById("status");
+fetch("fixtures_web.csv", { cache: "no-store" })
+  .then(function (r) {
+    if (!r.ok) throw new Error("CSV not found");
+    return r.text();
+  })
+  .then(function (text) {
+    var grid = parseCSV(text);
 
-  if (!tbody || !status) {
-    console.error("Missing #tableBody or #status in fixtures.html");
-    return;
-  }
+    // ✅ Skip header rows (THIS IS THE KEY)
+    var rows = grid.slice(2);
 
-  const csvUrl = `fixtures_web.csv?v=${Date.now()}`; // cache-bust
+    var html = "";
+    var count = 0;
 
-  fetch(csvUrl, { cache: "no-store" })
-    .then(r => {
-      if (!r.ok) throw new Error("fixtures_web.csv not found");
-      return r.text();
-    })
-    .then(text => {
-      const grid = parseCSV(text);
+    rows.forEach(function (r) {
+      if (!r[0] || r[0].indexOf("-") === -1) return;
 
-      const fixtures = grid
-        // Only keep date rows like 29-Aug-25
-        .filter(r => r[0] && /\d{2}-[A-Za-z]{3}-\d{2}/.test(r[0]))
-        .map(r => {
-          const date = r[0];
-          const day = r[1];
-          const home = r[2];
-          const away = r[8];
-          const homePts = r[4];
-          const awayPts = r[6];
+      html +=
+        "<tr>" +
+        "<td>" + r[0] + "</td>" +
+        "<td>" + r[1] + "</td>" +
+        "<td>" + r[2] + " vs " + r[8] + "</td>" +
+        "<td class='points'>" + (r[4] && r[6] ? r[4] + "-" + r[6] : "") + "</td>" +
+        "<td>" + (r[9] || "") + "</td>" +
+        "<td>" + (r[10] || "") + "</td>" +
+        "<td>" + (r[14] || "") + "</td>" +
+        "</tr>";
 
-          const points =
-            homePts && awayPts ? `${formatHalf(homePts)}-${formatHalf(awayPts)}` : "";
-
-          return `
-            <tr>
-              <td>${date}</td>
-              <td>${day}</td>
-              <td>${home} vs ${away}</td>
-              <td class="points">${points}</td>
-              <td>${r[9] || ""}</td>
-              <td>${r[10] || ""}</td>
-              <td>${r[14] || ""}</td>
-            </tr>
-          `;
-        });
-
-      tbody.innerHTML = fixtures.join("");
-      status.textContent = `Loaded ${fixtures.length} fixtures for the season.`;
-    })
-    .catch(e => {
-      status.style.color = "red";
-      status.textContent = e.message;
-      console.error(e);
+      count++;
     });
-});
 
+    tbody.innerHTML = html;
+    status.textContent = "Loaded " + count + " fixtures.";
+  })
+  .catch(function (e) {
+    status.style.color = "red";
+    status.textContent = e.message;
+    console.error(e);
+  });
+``
