@@ -148,38 +148,40 @@ fetch(new URL("match_results.csv", window.location.href).toString(), { cache: "n
     }
 
     function render(matchId) {
+// Rebuild league averages ONLY up to the selected match
+var leagueStats = {};
 
-      // ✅ REBUILD league averages UP TO selected match
-      var leagueStats = {};
+function addLeagueRow(row) {
+  if (!isLeague(row.details)) return;
 
-      // iterate oldest → selected match
-      for (var mi = matchIds.length - 1; mi >= 0; mi--) {
-        var mid = matchIds[mi];
-        var block = matchRows[mid];
+  var sc = toNum(row.score);
+  if (!isFinite(sc)) return;
 
-        for (var r = 0; r < block.length; r++) {
-          var row = block[r];
-          if (!isLeague(row.details)) continue;
+  if (!leagueStats[row.player]) {
+    leagueStats[row.player] = { games: 0, total: 0 };
+  }
+  leagueStats[row.player].games += 1;
+  leagueStats[row.player].total += sc;
+}
 
-          var sc = toNum(row.score);
-          if (!isFinite(sc)) continue;
+// matchIds is newest-first, so walk backwards (oldest → selected)
+for (var mi = matchIds.length - 1; mi >= 0; mi--) {
+  var mid = matchIds[mi];
+  var rows = matchRows[mid];
 
-          if (!leagueStats[row.player]) {
-            leagueStats[row.player] = { games: 0, total: 0 };
-          }
-          leagueStats[row.player].games += 1;
-          leagueStats[row.player].total += sc;
-        }
+  for (var r = 0; r < rows.length; r++) {
+    addLeagueRow(rows[r]);
+  }
 
-        if (mid === matchId) break;
-      }
+  // stop accumulating once we reach the selected match
+  if (matchId && mid === matchId) break;
+}
 
-      function leagueAvg(player) {
-        var p = leagueStats[player];
-        if (!p || p.games === 0) return "";
-        return (p.total / p.games).toFixed(3).replace(/\.?0+$/, "");
-      }
-
+function leagueAvg(player) {
+  var p = leagueStats[player];
+  if (!p || p.games === 0) return "";
+  return (p.total / p.games).toFixed(3).replace(/\.?0+$/, "");
+}
       tbody.innerHTML = "";
 
       if (!matchId) {
