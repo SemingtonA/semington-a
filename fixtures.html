@@ -162,6 +162,11 @@
        tr._win td  { background: #e8f8f1 !important; }
        tr._loss td { background: #fdecea !important; }
        tr._draw td { background: #fff8e1 !important; }
+
+       /* ===== CUP MATCH HIGHLIGHT ===== */
+       tr.cup-match td {
+       background-color: #e6f2ff; /* light blue */
+      }
   </style>
 </head>
 
@@ -564,9 +569,11 @@
     var tds = Array.from(tr.querySelectorAll("td"));
     if (!tds.length) return;
 
-    // ✅ Exclude cup matches
-    var competition = (tds[compIdx] ? tds[compIdx].textContent : "").toLowerCase();
-    if (competition.includes("cup")) return;
+    var competition = tds[compIdx].textContent.toLowerCase();
+    if (competition.includes("cup")) {
+    tr.classList.add("cup-match"); // ✅ highlight the row
+    return;                        // ✅ still exclude from counts
+  }
 
     // ✅ Only count when Points is present
     var pointsText = (tds[pointsIdx] ? tds[pointsIdx].textContent : "").trim();
