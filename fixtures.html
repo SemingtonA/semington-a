@@ -54,34 +54,77 @@
 
     .nav-buttons a:hover { background: #163aa3; }
 
-    /* ===== WIN / DRAW / LOSS BOXES ===== */
-    .result-boxes{
-      display:flex;
-      justify-content:center;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:12px;
-    }
+ /* ===== WIN / DRAW / LOSS BOXES ===== */
+/* ===== LEAGUE RESULTS STRIP ===== */
+.league-results-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
 
-    .result-box{
-      background:#000;          /* same as buttons */
-      color:#fff;
-      padding:10px 14px;
-      border-radius:6px;
-      font-weight:bold;
-      min-width:130px;
-      text-align:center;
-    }
+/* label */
+.league-label {
+  font-weight: bold;
+  font-size: 30px;
+  color: #000;
+}
 
-    .result-box.win{ border:2px solid #1e8449; }   /* green outline */
-    .result-box.draw{ border:2px solid #f1c40f; }  /* amber outline */
-    .result-box.loss{ border:2px solid #c0392b; }  /* red outline */
+/* box container */
+.result-boxes {
+  display: flex;
+  gap: 10px;
+}
+
+/* base black box */
+.result-box {
+  background: #000 !important;
+  color: #fff !important;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 20px;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+/* coloured outlines */
+.result-box.win   { border: 2px solid #1e8449; }
+.result-box.draw { border: 2px solid #f1c40f; }
+.result-box.loss { border: 2px solid #c0392b; }
+
+/* total box — same black, no colour outline, compact */
+.result-box.total {
+  border: 2px solid #000;
+  padding: 8px 12px;
+}
+
 
     /* ===== MAIN ===== */
     main {
       flex: 1;
       padding: 20px;
     }
+    .result-box-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.result-total {
+  background: #000;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  white-space: nowrap;
+}
 
     .content-box {
       background: #fff;
@@ -132,22 +175,31 @@
     </div>
   </div>
 
-  <div class="nav-buttons">
-  <a href="/semington-a/index.html">Home</a>
-  <a href="/semington-a/fixtures.html">Fixtures &amp; Results</a>
-  <a href="/semington-a/match-results.html">Match Results</a>
-  <a href="/semington-a/tocatch.html">To Catch</a>
-  <a href="/semington-a/gallery.html">Gallery</a>
-  <a href="/semington-a/rules.html">Rules</a>
-</div>
+ <div class="nav-buttons">
+    <a href="/semington-a/index.html">Home</a>
+    <a href="/semington-a/fixtures.html">Fixtures & Results</a>
+    <a href="/semington-a/match-results.html">Match Results</a>
+    <a href="/semington-a/tocatch.html">To Catch</a>
+    <a href="/semington-a/gallery.html">Gallery</a>
+    <a href="/semington-a/rules.html">Rules</a>
+  </div>
 
 
   <!-- ✅ NEW: Win/Draw/Loss boxes under the buttons -->
-  <div class="result-boxes" aria-label="Semington A record">
+<div class="league-results-row">
+  <div class="league-label">League Results</div>
+
+  <div class="result-boxes">
     <div class="result-box win">Wins: <span id="winCount">0</span></div>
     <div class="result-box draw">Draws: <span id="drawCount">0</span></div>
     <div class="result-box loss">Losses: <span id="lossCount">0</span></div>
   </div>
+
+  <div class="result-box total">
+    Total League Results: <span id="pointsTotal">0</span>
+  </div>
+</div>
+
 
 </header>
 
@@ -505,6 +557,7 @@
   if (fixtureIdx === -1 || pointsIdx === -1 || compIdx === -1) return;
 
   var wins = 0, draws = 0, losses = 0;
+  var totalPoints = 0;
   var eps = 0.001;
 
   Array.from(table.querySelectorAll("tbody tr")).forEach(function (tr) {
@@ -535,6 +588,8 @@
     if (/semington a/i.test(homeTeam)) myPoints = pair.left;
     else if (/semington a/i.test(awayTeam)) myPoints = pair.right;
     else return;
+    
+    totalPoints += myPoints;
 
     tr.classList.remove("_win","_loss","_draw");
 
@@ -556,11 +611,14 @@ else {
   document.getElementById("winCount").textContent = wins;
   document.getElementById("drawCount").textContent = draws;
   document.getElementById("lossCount").textContent = losses;
+  document.getElementById("pointsTotal").textContent = totalPoints.toFixed(1);
 })();
 </script>
 
 </body>
 </html>
+
+
 
 
 
