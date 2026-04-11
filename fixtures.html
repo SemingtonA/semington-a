@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Fixtures & Results</title>
+  <title>Fixtures &amp; Results</title>
 
   <style>
     body {
@@ -54,20 +54,43 @@
 
     .nav-buttons a:hover { background: #163aa3; }
 
+    /* ===== WIN / DRAW / LOSS BOXES ===== */
+    .result-boxes{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:12px;
+    }
+
+    .result-box{
+      background:#000;          /* same as buttons */
+      color:#fff;
+      padding:10px 14px;
+      border-radius:6px;
+      font-weight:bold;
+      min-width:130px;
+      text-align:center;
+    }
+
+    .result-box.win{ border:2px solid #1e8449; }   /* green outline */
+    .result-box.draw{ border:2px solid #f1c40f; }  /* amber outline */
+    .result-box.loss{ border:2px solid #c0392b; }  /* red outline */
+
     /* ===== MAIN ===== */
     main {
       flex: 1;
       padding: 20px;
     }
 
- .content-box {
-  background: #fff;
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 20px;
-  border-radius: 8px;
-  overflow-x: auto;
-}  
+    .content-box {
+      background: #fff;
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
 
     table { width: 100%; border-collapse: collapse; }
     th, td { padding: 8px; border-bottom: 1px solid #ddd; font-size: 14px; }
@@ -93,6 +116,9 @@
       th, td { font-size: 12px; }
       .footer-logo img { width: 48px; }
     }
+       tr._win td  { background: #e8f8f1 !important; }
+       tr._loss td { background: #fdecea !important; }
+       tr._draw td { background: #fff8e1 !important; }
   </style>
 </head>
 
@@ -100,21 +126,28 @@
 
 <header>
   <div class="header-top">
-    <h1>Fixtures & Results</h1>
+    <h1>Fixtures &amp; Results</h1>
     <div class="logo">
       <img src="Semington A Logo 5.jpg" alt="Semington A Logo">
     </div>
   </div>
 
-  <div class="nav-buttons">
-    <a href="/semington-a/index.html">Home</a>
-    <a href="/semington-a/fixtures.html">Fixtures & Results</a>
-    <a href="/semington-a/match-results.html">Match Results</a>
-    <a href="/semington-a/tocatch.html">To Catch</a>
-    <a href="/semington-a/gallery.html">Gallery</a>
-    <a href="/semington-a/rules.html">Rules</a>
+<a href="/semington-a/index.html">Home</a>
+<a href="/semington-a/fixtures.html">Fixtures &amp; Results</a>
+<a href="/semington-a/match-results.html">Match Results</a>
+<a href="/semington-a/tocatch.html">To Catch</a>
+<a href="/semington-a/gallery.html">Gallery</a>
+<a href="/semington-a/rules.html">Rules</a>
+
+  <!-- ✅ NEW: Win/Draw/Loss boxes under the buttons -->
+  <div class="result-boxes" aria-label="Semington A record">
+    <div class="result-box win">Wins: <span id="winCount">0</span></div>
+    <div class="result-box draw">Draws: <span id="drawCount">0</span></div>
+    <div class="result-box loss">Losses: <span id="lossCount">0</span></div>
   </div>
+
 </header>
+
 <main>
   <div class="content-box">
     <h2>Fixtures</h2>
@@ -132,287 +165,288 @@
           <th>Alley</th>
         </tr>
       </thead>
+
       <tbody>
-  <tr>
-  <td>29/08/2025</td>
-  <td>Friday</td>
-  <td>GBU vs Semington A</td>
-  <td></td>
-  <td>2–5</td>
-  <td>Liberal Club</td>
-  <td>Cup Match</td>
-  <td>Left Alley</td>
-</tr>
+        <tr>
+          <td>29/08/2025</td>
+          <td>Friday</td>
+          <td>GBU vs Semington A</td>
+          <td></td>
+          <td>5-2</td>
+          <td>Liberal Club</td>
+          <td>Premier</td>
+          <td>Left Alley</td>
+        </tr>
 
-<tr>
-  <td>05/09/2025</td>
-  <td>Friday</td>
-  <td>Semington A vs Staverton A</td>
-  <td></td>
-  <td>5–2</td>
-  <td>Semington Village Hall</td>
-  <td>Premier</td>
-  <td>N/A</td>
-</tr>
+        <tr>
+          <td>05/09/2025</td>
+          <td>Friday</td>
+          <td>Semington A vs Staverton A</td>
+          <td></td>
+          <td>1-6</td>
+          <td>Semington Village Hall</td>
+          <td>Premier</td>
+          <td>N/A</td>
+        </tr>
 
-<tr>
-  <td>19/09/2025</td>
-  <td>Friday</td>
-  <td>Cons D vs Semington A</td>
-  <td>313–292</td>
-  <td></td>
-  <td>Conservative Club</td>
-  <td>Cup Match</td>
-  <td>Right Up Alley</td>
-</tr>
+        <tr>
+          <td>19/09/2025</td>
+          <td>Friday</td>
+          <td>Cons D vs Semington A</td>
+          <td>313–292</td>
+          <td></td>
+          <td>Conservative Club</td>
+          <td>Cup Match</td>
+          <td>Right Up Alley</td>
+        </tr>
 
-<tr>
-  <td>26/09/2025</td>
-  <td>Friday</td>
-  <td>Spencers B vs Semington A</td>
-  <td></td>
-  <td>6½–½</td>
-  <td>Spencers</td>
-  <td>Premier</td>
-  <td>Left Alley</td>
-</tr>
+        <tr>
+          <td>26/09/2025</td>
+          <td>Friday</td>
+          <td>Spencers B vs Semington A</td>
+          <td></td>
+          <td>6½–½</td>
+          <td>Spencers</td>
+          <td>Premier</td>
+          <td>Left Alley</td>
+        </tr>
 
-<tr>
-  <td>03/10/2025</td>
-  <td>Friday</td>
-  <td>Semington A vs Cons C</td>
-  <td></td>
-  <td>0–7</td>
-  <td>Semington Village Hall</td>
-  <td>Premier</td>
-  <td>N/A</td>
-</tr>
+        <tr>
+          <td>03/10/2025</td>
+          <td>Friday</td>
+          <td>Semington A vs Cons C</td>
+          <td></td>
+          <td>0–7</td>
+          <td>Semington Village Hall</td>
+          <td>Premier</td>
+          <td>N/A</td>
+        </tr>
 
-<tr>
-  <td>10/10/2025</td>
-  <td>Friday</td>
-  <td>M.U.D.S. vs Semington A</td>
-  <td></td>
-  <td>6½–½</td>
-  <td>Spencers</td>
-  <td>Premier</td>
-  <td>Right Alley</td>
-</tr>
+        <tr>
+          <td>10/10/2025</td>
+          <td>Friday</td>
+          <td>M.U.D.S. vs Semington A</td>
+          <td></td>
+          <td>6½–½</td>
+          <td>Spencers</td>
+          <td>Premier</td>
+          <td>Right Alley</td>
+        </tr>
 
-<tr>
-  <td>31/10/2025</td>
-  <td>Friday</td>
-  <td>Avon A vs Semington A</td>
-  <td></td>
-  <td>6–1</td>
-  <td>Conservative Club</td>
-  <td>Premier</td>
-  <td>Left Up Alley</td>
-</tr>
+        <tr>
+          <td>31/10/2025</td>
+          <td>Friday</td>
+          <td>Avon A vs Semington A</td>
+          <td></td>
+          <td>6–1</td>
+          <td>Conservative Club</td>
+          <td>Premier</td>
+          <td>Left Up Alley</td>
+        </tr>
 
-<tr>
-  <td>07/11/2025</td>
-  <td>Friday</td>
-  <td>Semington A vs Motley Crew</td>
-  <td></td>
-  <td>1½–5½</td>
-  <td>Semington Village Hall</td>
-  <td>Premier</td>
-  <td>N/A</td>
-</tr>
+        <tr>
+          <td>07/11/2025</td>
+          <td>Friday</td>
+          <td>Semington A vs Motley Crew</td>
+          <td></td>
+          <td>1½–5½</td>
+          <td>Semington Village Hall</td>
+          <td>Premier</td>
+          <td>N/A</td>
+        </tr>
 
-<tr>
-  <td>21/11/2025</td>
-  <td>Friday</td>
-  <td>Semington B vs Semington A</td>
-  <td></td>
-  <td>6–1</td>
-  <td>Semington Village Hall</td>
-  <td>Premier</td>
-  <td>N/A</td>
-</tr>
+        <tr>
+          <td>21/11/2025</td>
+          <td>Friday</td>
+          <td>Semington B vs Semington A</td>
+          <td></td>
+          <td>6–1</td>
+          <td>Semington Village Hall</td>
+          <td>Premier</td>
+          <td>N/A</td>
+        </tr>
 
-<tr>
-  <td>28/11/2025</td>
-  <td>Friday</td>
-  <td>Semington A vs Seend A</td>
-  <td></td>
-  <td>0–7</td>
-  <td>Semington Village Hall</td>
-  <td>Premier</td>
-  <td>N/A</td>
-</tr>
+        <tr>
+          <td>28/11/2025</td>
+          <td>Friday</td>
+          <td>Semington A vs Seend A</td>
+          <td></td>
+          <td>0–7</td>
+          <td>Semington Village Hall</td>
+          <td>Premier</td>
+          <td>N/A</td>
+        </tr>
 
-<tr>
-  <td>05/12/2025</td>
-  <td>Friday</td>
-  <td>Cons D vs Semington A</td>
-  <td></td>
-  <td>7–0</td>
-  <td>Conservative Club</td>
-  <td>Premier</td>
-  <td>Left Up Alley</td>
-</tr>
+        <tr>
+          <td>05/12/2025</td>
+          <td>Friday</td>
+          <td>Cons D vs Semington A</td>
+          <td></td>
+          <td>7–0</td>
+          <td>Conservative Club</td>
+          <td>Premier</td>
+          <td>Left Up Alley</td>
+        </tr>
 
-<tr>
-  <td>12/12/2025</td>
-  <td>Friday</td>
-  <td>Semington A vs Comrades</td>
-  <td></td>
-  <td>5–2</td>
-  <td>Semington Village Hall</td>
-  <td>Premier</td>
-  <td>N/A</td>
-</tr>
+        <tr>
+          <td>12/12/2025</td>
+          <td>Friday</td>
+          <td>Semington A vs Comrades</td>
+          <td></td>
+          <td>5–2</td>
+          <td>Semington Village Hall</td>
+          <td>Premier</td>
+          <td>N/A</td>
+        </tr>
 
-<tr>
-  <td>02/01/2026</td>
-  <td>Friday</td>
-  <td>Semington A vs Seend A</td>
-  <td>201–299</td>
-  <td></td>
-  <td>Semington Village Hall</td>
-  <td>Cup Match</td>
-  <td>N/A</td>
-</tr>
+        <tr>
+          <td>02/01/2026</td>
+          <td>Friday</td>
+          <td>Semington A vs Seend A</td>
+          <td>201–299</td>
+          <td></td>
+          <td>Semington Village Hall</td>
+          <td>Cup Match</td>
+          <td>N/A</td>
+        </tr>
 
-<tr>
-  <td>09/01/2026</td>
-  <td>Friday</td>
-  <td>Semington A vs Cons D</td>
-  <td></td>
-  <td>0–7</td>
-  <td>Semington Village Hall</td>
-  <td>Premier</td>
-  <td>N/A</td>
-</tr>
+        <tr>
+          <td>09/01/2026</td>
+          <td>Friday</td>
+          <td>Semington A vs Cons D</td>
+          <td></td>
+          <td>0–7</td>
+          <td>Semington Village Hall</td>
+          <td>Premier</td>
+          <td>N/A</td>
+        </tr>
 
-<tr>
-  <td>16/01/2026</td>
-  <td>Friday</td>
-  <td>Staverton A vs Semington A</td>
-  <td></td>
-  <td>6–1</td>
-  <td>Staverton Village Hall</td>
-  <td>Premier</td>
-  <td>N/A</td>
-</tr>
+        <tr>
+          <td>16/01/2026</td>
+          <td>Friday</td>
+          <td>Staverton A vs Semington A</td>
+          <td></td>
+          <td>6–1</td>
+          <td>Staverton Village Hall</td>
+          <td>Premier</td>
+          <td>N/A</td>
+        </tr>
 
-<tr>
-  <td>30/01/2026</td>
-  <td>Friday</td>
-  <td>M.U.D.S. vs Semington A</td>
-  <td>176–175</td>
-  <td></td>
-  <td>Spencers</td>
-  <td>Cup Match</td>
-  <td></td>
-</tr>
+        <tr>
+          <td>30/01/2026</td>
+          <td>Friday</td>
+          <td>M.U.D.S. vs Semington A</td>
+          <td>176–175</td>
+          <td></td>
+          <td>Spencers</td>
+          <td>Cup Match</td>
+          <td></td>
+        </tr>
 
-<tr>
-  <td>06/02/2026</td>
-  <td>Friday</td>
-  <td>Semington A vs Spencers B</td>
-  <td></td>
-  <td>1–6</td>
-  <td>Semington Village Hall</td>
-  <td>Premier</td>
-  <td>N/A</td>
-</tr>
+        <tr>
+          <td>06/02/2026</td>
+          <td>Friday</td>
+          <td>Semington A vs Spencers B</td>
+          <td></td>
+          <td>1–6</td>
+          <td>Semington Village Hall</td>
+          <td>Premier</td>
+          <td>N/A</td>
+        </tr>
 
-<tr>
-  <td>13/02/2026</td>
-  <td>Friday</td>
-  <td>Cons C vs Semington A</td>
-  <td></td>
-  <td>7–0</td>
-  <td>Conservative Club</td>
-  <td>Premier</td>
-  <td></td>
-</tr>
+        <tr>
+          <td>13/02/2026</td>
+          <td>Friday</td>
+          <td>Cons C vs Semington A</td>
+          <td></td>
+          <td>7–0</td>
+          <td>Conservative Club</td>
+          <td>Premier</td>
+          <td></td>
+        </tr>
 
-<tr>
-  <td>20/02/2026</td>
-  <td>Friday</td>
-  <td>Semington A vs M.U.D.S.</td>
-  <td></td>
-  <td>0–7</td>
-  <td>Semington Village Hall</td>
-  <td>Premier</td>
-  <td>N/A</td>
-</tr>
+        <tr>
+          <td>20/02/2026</td>
+          <td>Friday</td>
+          <td>Semington A vs M.U.D.S.</td>
+          <td></td>
+          <td>0–7</td>
+          <td>Semington Village Hall</td>
+          <td>Premier</td>
+          <td>N/A</td>
+        </tr>
 
-<tr>
-  <td>13/03/2026</td>
-  <td>Friday</td>
-  <td>Semington A vs Avon A</td>
-  <td></td>
-  <td>1–6</td>
-  <td>Semington Village Hall</td>
-  <td>Premier</td>
-  <td>N/A</td>
-</tr>
+        <tr>
+          <td>13/03/2026</td>
+          <td>Friday</td>
+          <td>Semington A vs Avon A</td>
+          <td></td>
+          <td>1–6</td>
+          <td>Semington Village Hall</td>
+          <td>Premier</td>
+          <td>N/A</td>
+        </tr>
 
-<tr>
-  <td>19/03/2026</td>
-  <td>Thursday</td>
-  <td>Motley Crew vs Semington A</td>
-  <td></td>
-  <td>6–1</td>
-  <td>Liberal Club</td>
-  <td>Premier</td>
-  <td>Right Alley</td>
-</tr>
+        <tr>
+          <td>19/03/2026</td>
+          <td>Thursday</td>
+          <td>Motley Crew vs Semington A</td>
+          <td></td>
+          <td>6–1</td>
+          <td>Liberal Club</td>
+          <td>Premier</td>
+          <td>Right Alley</td>
+        </tr>
 
-<tr>
-  <td>27/03/2026</td>
-  <td>Friday</td>
-  <td>Semington A vs Spencers B</td>
-  <td></td>
-  <td>1–6</td>
-  <td>Semington Village Hall</td>
-  <td>Premier</td>
-  <td>N/A</td>
-</tr>
+        <tr>
+          <td>27/03/2026</td>
+          <td>Friday</td>
+          <td>Semington A vs Spencers B</td>
+          <td></td>
+          <td>1–6</td>
+          <td>Semington Village Hall</td>
+          <td>Premier</td>
+          <td>N/A</td>
+        </tr>
 
-<tr>
-  <td>10/04/2026</td>
-  <td>Friday</td>
-  <td>Seend A vs Semington A</td>
-  <td></td>
-  <td>7-0</td>
-  <td>Seend Village Hall</td>
-  <td>Premier</td>
-  <td>Left Alley</td>
-</tr>
+        <tr>
+          <td>10/04/2026</td>
+          <td>Friday</td>
+          <td>Seend A vs Semington A</td>
+          <td></td>
+          <td>7-0</td>
+          <td>Seend Village Hall</td>
+          <td>Premier</td>
+          <td>Left Alley</td>
+        </tr>
 
-<tr>
-  <td>17/04/2026</td>
-  <td>Friday</td>
-  <td>Semington A vs Cons D</td>
-  <td></td>
-  <td></td>
-  <td>Semington Village Hall</td>
-  <td>Premier</td>
-  <td>N/A</td>
-</tr>
+        <tr>
+          <td>17/04/2026</td>
+          <td>Friday</td>
+          <td>Semington A vs Cons D</td>
+          <td></td>
+          <td></td>
+          <td>Semington Village Hall</td>
+          <td>Premier</td>
+          <td>N/A</td>
+        </tr>
 
-<tr>
-  <td>24/04/2026</td>
-  <td>Friday</td>
-  <td>Comrades vs Semington A</td>
-  <td></td>
-  <td></td>
-  <td>Spencers</td>
-  <td>Premier</td>
-  <td>Right Alley</td>
-</tr>
-           <!-- add more rows as needed -->
+        <tr>
+          <td>24/04/2026</td>
+          <td>Friday</td>
+          <td>Comrades vs Semington A</td>
+          <td></td>
+          <td></td>
+          <td>Spencers</td>
+          <td>Premier</td>
+          <td>Right Alley</td>
+        </tr>
+
+        <!-- add more rows as needed -->
       </tbody>
     </table>
   </div>
 </main>
-
 
 <footer>
   © Semington A Skittles Team
@@ -421,7 +455,106 @@
   </div>
 </footer>
 
-<script src="fixtures.js"></script>
+<!-- ✅ NEW: Auto-count wins/draws/losses for Semington A from the Points column -->
+<script>
+(function () {
+  function toHalfNum(s) {
+    if (!s) return NaN;
+    s = String(s).trim();
+    if (!s) return NaN;
+
+    // Normalise common half formats
+    s = s.replace(/\s+/g, "");
+    s = s.replace(/½/g, ".5");      // replace ALL half symbols
+    s = s.replace(/^\.5$/, "0.5");  // ".5" -> "0.5"
+
+    // also support "1/2"
+    if (s === "1/2") return 0.5;
+    s = s.replace(/(\d+)1\/2/g, "$1.5"); // "61/2" -> "6.5" if it ever appears
+
+    var n = Number(s);
+    return Number.isFinite(n) ? n : NaN;
+  }
+
+  function parsePoints(text) {
+    if (!text) return null;
+    var parts = String(text).trim().split(/[-–—]/).map(function (p) { return p.trim(); });
+    if (parts.length !== 2) return null;
+
+    var a = toHalfNum(parts[0]);
+    var b = toHalfNum(parts[1]);
+    if (!Number.isFinite(a) || !Number.isFinite(b)) return null;
+
+    return { left: a, right: b };
+  }
+
+  var table = document.querySelector("table");
+  if (!table) return;
+
+  var headers = Array.from(table.querySelectorAll("thead th")).map(function (th) {
+    return th.textContent.trim().toLowerCase();
+  });
+
+  var fixtureIdx = headers.indexOf("fixture");
+  var pointsIdx  = headers.indexOf("points");
+  var compIdx    = headers.indexOf("competition");
+
+  if (fixtureIdx === -1 || pointsIdx === -1 || compIdx === -1) return;
+
+  var wins = 0, draws = 0, losses = 0;
+  var eps = 0.001;
+
+  Array.from(table.querySelectorAll("tbody tr")).forEach(function (tr) {
+    var tds = Array.from(tr.querySelectorAll("td"));
+    if (!tds.length) return;
+
+    // ✅ Exclude cup matches
+    var competition = (tds[compIdx] ? tds[compIdx].textContent : "").toLowerCase();
+    if (competition.includes("cup")) return;
+
+    // ✅ Only count when Points is present
+    var pointsText = (tds[pointsIdx] ? tds[pointsIdx].textContent : "").trim();
+    if (!pointsText) return;
+
+    var pair = parsePoints(pointsText);
+    if (!pair) return;
+
+    var fixtureText = (tds[fixtureIdx] ? tds[fixtureIdx].textContent : "").trim();
+    if (!fixtureText) return;
+
+    var parts = fixtureText.split(/\s+vs\s+/i);
+    if (parts.length < 2) return;
+
+    var homeTeam = parts[0].trim();
+    var awayTeam = parts[1].trim();
+
+    var myPoints = NaN;
+    if (/semington a/i.test(homeTeam)) myPoints = pair.left;
+    else if (/semington a/i.test(awayTeam)) myPoints = pair.right;
+    else return;
+
+    tr.classList.remove("_win","_loss","_draw");
+
+if (myPoints > 3.5 + eps) {
+  wins++;
+  tr.classList.add("_win");
+  console.log("WIN:", fixtureText, pointsText);
+}
+else if (myPoints < 3.5 - eps) {
+  losses++;
+  tr.classList.add("_loss");
+}
+else {
+  draws++;
+  tr.classList.add("_draw");
+}
+  });
+
+  document.getElementById("winCount").textContent = wins;
+  document.getElementById("drawCount").textContent = draws;
+  document.getElementById("lossCount").textContent = losses;
+})();
+</script>
 
 </body>
 </html>
