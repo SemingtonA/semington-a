@@ -1,173 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Match Results</title>
 
   <style>
-  body {
-    margin: 0;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    font-family: Arial, sans-serif;
-    background-color: #f5f0e6;
-  }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: Arial, sans-serif;
+      background-color: #f5f0e6;
+    }
 
-  /* ===== HEADER ===== */
-  header {
-    padding: 20px;
-  }
-
-  .header-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  header h1 {
-    margin: 0;
-    font-size: 72px; /* matches your new header size */
-    text-align: center;
-    flex: 1;
-  }
-
-  .logo img {
-    width: 300px;
-    height: auto;
-  }
-
-  .nav-buttons {
-    margin-top: 15px;
-    text-align: center;
-  }
-
-  .nav-buttons a {
-    display: inline-block;
-    margin: 6px;
-    padding: 10px 18px;
-    background: #000;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 4px;
-    font-weight: bold;
-  }
-
-  .nav-buttons a:hover {
-    background: #163aa3;
-  }
-
-  /* ===== MAIN ===== */
-  main {
-    flex: 1;
-    padding: 20px;
-  }
-
-  .panel {
-    max-width: 1400px;
-    margin: 10px auto 14px;
-    background: #ffffffcc;
-    border-radius: 8px;
-    padding: 12px;
-  }
-
-  .label {
-    font-size: 12px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 6px;
-  }
-
-  select {
-    width: 100%;
-    padding: 8px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-  }
-
-  #status {
-    margin-top: 8px;
-    font-size: 12px;
-    color: #555;
-  }
-
-  .table-wrap {
-    max-width: 1400px;
-    margin: 0 auto;
-    background: #fff;
-    border-radius: 8px;
-    padding: 12px;
-    overflow-x: auto;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-  }
-
-  th {
-    border-bottom: 1px solid #eee;
-    padding: 8px;
-    white-space: normal;
-    text-align: center;
-    background: #fafafa;
-  }
-
-  td {
-    border-bottom: 1px solid #eee;
-    padding: 8px;
-    white-space: nowrap;
-    text-align: center;
-  }
-
-  /* Left align Match ID + Team Player */
-  td:nth-child(1), th:nth-child(1),
-  td:nth-child(4), th:nth-child(4) {
-    text-align: left;
-  }
-
-  /* ===== FOOTER ===== */
-  footer {
-    margin-top: auto;
-    text-align: center;
-    padding: 16px 20px 22px;
-    font-size: 12px;
-    color: #555;
-  }
-
-  .footer-logo img {
-    width: 60px;
-    opacity: 0.9;
-  }
-
-  /* ===== MOBILE (portrait + landscape) ===== */
-  @media (max-width: 900px) {
+    /* ===== HEADER ===== */
+    header { padding: 20px; }
 
     .header-top {
-      flex-direction: column;
-      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
     header h1 {
-      font-size: 32px;
-      margin-top: 10px;
+      margin: 0;
+      font-size: 72px;
+      text-align: center;
+      flex: 1;
     }
 
-    .logo img {
-      width: 150px;
-      margin-bottom: 10px;
+    .logo img { width: 300px; height: auto; }
+
+    .nav-buttons { margin-top: 15px; text-align: center; }
+
+    .nav-buttons a {
+      display: inline-block;
+      margin: 6px;
+      padding: 10px 18px;
+      background: #000;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+
+    .nav-buttons a:hover { background: #163aa3; }
+
+    /* ===== MAIN ===== */
+    main { flex: 1; padding: 20px; }
+
+    .panel {
+      max-width: 1400px;
+      margin: 10px auto 14px;
+      background: #ffffffcc;
+      border-radius: 8px;
+      padding: 12px;
+    }
+
+    .label {
+      font-size: 12px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 6px;
+    }
+
+    select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    #status {
+      margin-top: 8px;
+      font-size: 15px;
+      color: #555;
+    }
+
+    .table-wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
     }
 
     table {
-      font-size: 12px;
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 15px;
     }
 
-    .footer-logo img {
-      width: 48px;
+    th {
+      border-bottom: 1px solid #eee;
+      padding: 8px;
+      white-space: normal;
+      text-align: center;
+      background: #fafafa;
+      font-weight: bold;
     }
-  }
+
+    td {
+      border-bottom: 1px solid #eee;
+      padding: 8px;
+      white-space: nowrap;
+      text-align: center;
+      font-weight: bold;
+      color: #000;
+    }
+
+    /* Left align Match ID + Team Player */
+    td:nth-child(1), th:nth-child(1),
+    td:nth-child(4), th:nth-child(4) {
+      text-align: left;
+    }
+
+    /* Position column default black */
+    .table-wrap td:nth-child(6) { color: #000; }
+
+    /* ===== Highlight styles ===== */
+    /* Pos #1: green box + white text */
+    .table-wrap td.pos-1 {
+      background: #1eaa52;
+      color: #fff;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    /* Pos 7–10 (lowest 4): amber box + white text */
+    .table-wrap td.pos-low {
+      background: #ffb000; /* amber */
+      color: #fff;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    /* Away placeholder in Total Score: black box */
+    .table-wrap td.away-total {
+      background: #000;
+      color: #fff;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    /* Highest Total Score per match: green box + white text */
+    .table-wrap td.top-total {
+      background: #1eaa52;
+      color: #fff;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    /* Highest Ducks per match: red box + white text */
+    .table-wrap td.top-ducks {
+      background: #c0392b;
+      color: #fff;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    /* ✅ Highest Spares per match: NOT not blue (green box + white text) */
+    .table-wrap td.top-spares {
+      background: #1eaa52; /* green – same as others */
+      color: #fff;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    /* Highest Legs Won / Top Score per match: green box + white text */
+    .table-wrap td.top-green {
+      background: #1eaa52;
+      color: #fff;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    /* Highest Avg per match: gold box + white text */
+    .table-wrap td.top-avg {
+      background: #d4af37; /* gold */
+      color: #000;
+      border-radius: 4px;
+      text-align: center;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      margin-top: auto;
+      text-align: center;
+      padding: 16px 20px 22px;
+      font-size: 12px;
+      color: #555;
+    }
+
+    .footer-logo img { width: 60px; opacity: 0.9; }
+
+    /* ===== MOBILE ===== */
+    @media (max-width: 900px) {
+      .header-top { flex-direction: column; text-align: center; }
+      header h1 { font-size: 32px; margin-top: 10px; }
+      .logo img { width: 150px; margin-bottom: 10px; }
+      table { font-size: 12px; }
+      .footer-logo img { width: 48px; }
+    }
   </style>
 </head>
 
@@ -175,13 +212,12 @@
 <header>
   <div class="header-top">
     <h1>Match Results</h1>
-
     <div class="logo">
       <img src="Semington A Logo 5.jpg" alt="Semington A Logo">
     </div>
   </div>
 
-  <div class="nav-buttons">
+ <div class="nav-buttons">
     <a href="/semington-a/index.html">Home</a>
     <a href="/semington-a/fixtures.html">Fixtures & Results</a>
     <a href="/semington-a/match-results.html">Match Results</a>
@@ -191,9 +227,7 @@
   </div>
 </header>
 
-
 <main>
-
   <div class="panel">
     <div class="label">Filter by Match ID</div>
     <select id="matchSelect">
@@ -222,18 +256,425 @@
       <tbody id="tableBody"></tbody>
     </table>
   </div>
-
 </main>
 
 <footer>
   © Semington A Skittles Team
   <div class="footer-logo">
-   <img src="Semington A Logo 5.jpg" alt="Semington A Logo">
+    <img src="Semington A Logo 5.jpg" alt="Semington A Logo">
   </div>
-  
 </footer>
-<script src="/semington-a/match-results.js"></script>
 
+<script>
+(function () {
+  const tbody  = document.getElementById("tableBody");
+  const select = document.getElementById("matchSelect");
+  const status = document.getElementById("status");
 
+  function clean(h) { return String(h || "").trim().replace(/:$/, ""); }
+
+  function hz(v) {
+    v = (v === undefined || v === null) ? "" : String(v).trim();
+    return (v === "" || v === "0" || v === "0.00") ? "" : v;
+  }
+
+  // ✅ comma-safe numeric conversion
+  function toNum(v) {
+    const n = Number(
+      String(v === undefined ? "" : v)
+        .replace(/,/g, "")
+        .trim()
+    );
+    return Number.isFinite(n) ? n : NaN;
+  }
+
+  function pound(v) {
+    const t = hz(v);
+    return t ? ("£" + t.replace(/\.0+$/, "")) : "";
+  }
+
+  function isLeague(details) { return /league/i.test(details || ""); }
+
+  // dd/mm/yyyy at start of Match ID
+  function dateFromMatchId(id) {
+    const m = String(id || "").match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+    if (!m) return null;
+    return new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]));
+  }
+
+  function parseCSV(text) {
+    // CSV in this repo is simple comma-separated
+    return text.replace(/^\uFEFF/, "").trim().split(/\r?\n/).map(line => line.split(","));
+  }
+
+  // Stable sort: avg DESC only; A N Other always last; ties keep original order
+  function sortByAvgOnlyStable(list) {
+    const copy = list.map((item, idx) => ({ item, idx }));
+    copy.sort((A, B) => {
+      const a = A.item, b = B.item;
+
+      if (a.player === "A N Other") return 1;
+      if (b.player === "A N Other") return -1;
+
+      const aA = toNum(a.avg);
+      const bA = toNum(b.avg);
+      const aHas = Number.isFinite(aA);
+      const bHas = Number.isFinite(bA);
+
+      if (aHas && bHas && bA !== aA) return bA - aA;
+      if (aHas && !bHas) return -1;
+      if (!aHas && bHas) return 1;
+
+      return A.idx - B.idx;
+    });
+    return copy.map(x => x.item);
+  }
+
+  // Running league avg snapshots up to each match (so Away/absent players can still show Avg)
+  function buildLeagueSnapshots(matchIds, matchRows) {
+    const snapshots = {};
+    const leagueStats = {}; // player -> {games,total}
+
+    for (let mi = matchIds.length - 1; mi >= 0; mi--) {
+      const mid = matchIds[mi];
+      const raw = matchRows[mid] || [];
+
+      for (let r = 0; r < raw.length; r++) {
+        const row = raw[r];
+        if (!isLeague(row.details)) continue;
+
+        const sc = toNum(row.score);
+        if (!Number.isFinite(sc)) continue;
+
+        if (!leagueStats[row.player]) leagueStats[row.player] = { games: 0, total: 0 };
+        leagueStats[row.player].games += 1;
+        leagueStats[row.player].total += sc;
+      }
+
+      const snap = {};
+      for (const p in leagueStats) {
+        const st = leagueStats[p];
+        snap[p] = st.games ? (st.total / st.games).toFixed(3).replace(/\.?0+$/, "") : "";
+      }
+
+      if (snap["A N Other"] === undefined) snap["A N Other"] = "";
+      snapshots[mid] = snap;
+    }
+    return snapshots;
+  }
+
+  function markMax(list, field, flagName, excludeAwayScoreCell) {
+    // Marks rows with max numeric value of field. Ties allowed.
+    let max = -Infinity;
+    for (let i = 0; i < list.length; i++) {
+      const val = toNum(list[i][field]);
+      if (Number.isFinite(val) && val > max) max = val;
+    }
+    for (let i = 0; i < list.length; i++) {
+      const val = toNum(list[i][field]);
+      list[i][flagName] = (Number.isFinite(val) && val === max);
+
+      if (excludeAwayScoreCell && list[i].absent) list[i][flagName] = false;
+    }
+  }
+
+  // ✅ NEW: Only mark max if the maximum is > 0 (prevents highlighting all zeros)
+  function markMaxIfPositive(list, field, flagName, excludeAwayScoreCell) {
+    let max = -Infinity;
+
+    for (let i = 0; i < list.length; i++) {
+      const val = toNum(list[i][field]);
+      if (Number.isFinite(val) && val > max) max = val;
+    }
+
+    // If max is not a real number or max <= 0, don't highlight anything
+    if (!Number.isFinite(max) || max <= 0) {
+      for (let i = 0; i < list.length; i++) {
+        list[i][flagName] = false;
+      }
+      return;
+    }
+
+    // Otherwise highlight the max (ties allowed)
+    for (let i = 0; i < list.length; i++) {
+      const val = toNum(list[i][field]);
+      list[i][flagName] = (Number.isFinite(val) && val === max);
+
+      if (excludeAwayScoreCell && list[i].absent) list[i][flagName] = false;
+    }
+  }
+
+  function markPosLow(list) {
+    // Amber for positions 7–10 (lowest four)
+    for (let i = 0; i < list.length; i++) {
+      const p = Number(String(list[i].position || "").trim());
+      list[i].isPosLow = Number.isFinite(p) && p >= 7 && p <= 10;
+    }
+  }
+
+  function rowHtml(r) {
+    // Total Score display and classes
+    let scoreCell = hz(r.score);
+    if (r.absent) scoreCell = (r.player === "A N Other") ? "" : "Away";
+
+    // Priority: Away black > top total green
+    let scoreClass = "";
+    if (scoreCell === "Away") scoreClass = "away-total";
+    else if (r.isTopTotal) scoreClass = "top-total";
+    const scoreTdClass = scoreClass ? (' class="' + scoreClass + '"') : "";
+
+    // Position classes
+    let posClass = "";
+    if (String(r.position || "") === "1") posClass = "pos-1";
+    else if (r.isPosLow) posClass = "pos-low";
+    const posTdClass = posClass ? (' class="' + posClass + '"') : "";
+
+    // Ducks/Spares/Legs/TopScore/Avg highlight classes
+    const ducksTdClass  = r.isTopDucks  ? ' class="top-ducks"'  : "";
+    const sparesTdClass = r.isTopSpares ? ' class="top-spares"' : "";  // ✅ spares NOT green
+    const legsTdClass   = r.isTopLegs   ? ' class="top-green"'  : "";
+    const topTdClass    = r.isTopTop    ? ' class="top-green"'  : "";
+    const avgTdClass    = r.isTopAvg    ? ' class="top-avg"'    : "";
+
+    return "<tr>" +
+      "<td>" + (r.matchId || "") + "</td>" +
+      "<td>" + (r.details || "") + "</td>" +
+      "<td>" + (r.homeAway || "") + "</td>" +
+      "<td>" + (r.player || "") + "</td>" +
+      "<td" + scoreTdClass + ">" + scoreCell + "</td>" +
+      "<td" + posTdClass + ">" + (r.position || "") + "</td>" +
+      "<td" + ducksTdClass + ">" + hz(r.ducks) + "</td>" +
+      "<td" + sparesTdClass + ">" + hz(r.spares) + "</td>" +
+      "<td" + legsTdClass + ">" + pound(r.legsWon) + "</td>" +
+      "<td" + topTdClass + ">" + pound(r.top) + "</td>" +
+      "<td" + avgTdClass + ">" + (r.avg || "") + "</td>" +
+    "</tr>";
+  }
+
+  status.textContent = "Loading match results…";
+
+  fetch("match_results.csv", { cache: "no-store" })
+    .then(r => {
+      if (!r.ok) throw new Error("match_results.csv not found");
+      return r.text();
+    })
+    .then(text => {
+      const grid = parseCSV(text);
+
+      // find header row containing "Match ID"
+      let headerIndex = -1;
+      for (let i = 0; i < grid.length; i++) {
+        for (let j = 0; j < grid[i].length; j++) {
+          if (clean(grid[i][j]) === "Match ID") { headerIndex = i; break; }
+        }
+        if (headerIndex !== -1) break;
+      }
+      if (headerIndex === -1) throw new Error('Header row not found (expected "Match ID")');
+
+      const headers = grid[headerIndex].map(clean);
+      const rows = grid.slice(headerIndex + 1);
+
+      function get(o, name) { return (o[name] || "").trim(); }
+
+      // normalize data rows
+      const data = [];
+      for (let i = 0; i < rows.length; i++) {
+        const o = {};
+        for (let j = 0; j < headers.length; j++) o[headers[j]] = (rows[i][j] || "").trim();
+
+        if (!get(o, "Match ID") || !get(o, "Team Player")) continue;
+
+        data.push({
+          matchId:  get(o, "Match ID"),
+          details:  get(o, "Match Details"),
+          homeAway: get(o, "Home or Away"),
+          player:   get(o, "Team Player"),
+          score:    get(o, "Total Score"),
+          ducks:    get(o, "Ducks"),
+          spares:   get(o, "Spares"),
+          legsWon:  get(o, "Legs Won"),
+          top:      get(o, "Top Score"),
+          avg:      get(o, "League Averages") || get(o, "League Avg")
+        });
+      }
+
+      // roster for absent expansion
+      const rosterMap = {};
+      data.forEach(r => { if (r.player && r.player !== "Away") rosterMap[r.player] = true; });
+      rosterMap["A N Other"] = true;
+      const roster = Object.keys(rosterMap).sort((a, b) => a.localeCompare(b));
+
+      // group by match
+      const matchRows = {};
+      const byPlayer  = {};
+      data.forEach(rr => {
+        if (!matchRows[rr.matchId]) matchRows[rr.matchId] = [];
+        matchRows[rr.matchId].push(rr);
+        if (!byPlayer[rr.matchId]) byPlayer[rr.matchId] = {};
+        byPlayer[rr.matchId][rr.player] = rr;
+      });
+
+      // match IDs newest first
+      const matchIds = Object.keys(matchRows);
+      matchIds.sort((a, b) => {
+        const da = dateFromMatchId(a);
+        const db = dateFromMatchId(b);
+        if (!da && !db) return 0;
+        if (!da) return 1;
+        if (!db) return -1;
+        return db - da;
+      });
+
+      // dropdown (newest first)
+      while (select.options.length > 1) select.remove(1);
+      matchIds.forEach(id => {
+        const opt = document.createElement("option");
+        opt.value = id;
+        opt.textContent = id;
+        select.appendChild(opt);
+      });
+
+      // snapshots for avg (incl Away players)
+      const snapshots = buildLeagueSnapshots(matchIds, matchRows);
+
+      function applyHighlights(list) {
+        // Highest Total Score per match
+        markMax(list, "score", "isTopTotal", true);
+
+        // Highest Ducks per match (red)
+        markMax(list, "ducks", "isTopDucks", false);
+
+        // ✅ Highest Spares per match (only if max > 0) — NOT green
+        markMaxIfPositive(list, "spares", "isTopSpares", false);
+       
+        // Highest Legs Won / Top Score per match (green)
+         markMaxIfPositive(list, "legsWon", "isTopLegs", false);
+         // Top Score: highlight ONLY if value is exactly £3
+         list.forEach(r => {
+         r.isTopTop = (toNum(r.top) === 3);
+       });
+        
+       // Highest Avg per match (gold) — ignore blanks automatically
+        markMax(list, "avg", "isTopAvg", false);
+
+        // Amber for positions 7–10
+        markPosLow(list);
+      }
+
+      function render(matchId) {
+        tbody.innerHTML = "";
+
+        // ===== ALL MATCHES: each match sorted by Avg desc, A N Other last
+        if (!matchId) {
+          let html = "";
+          matchIds.forEach(id => {
+            const raw = matchRows[id] || [];
+            const snap = snapshots[id] || {};
+
+            // attach snapshot avg (so sorting uses running avg at that match)
+            const block = raw.map((x, idx) => ({
+              _idx: idx,
+              matchId: x.matchId,
+              details: x.details,
+              homeAway: x.homeAway,
+              player: x.player,
+              score: x.score,
+              ducks: x.ducks,
+              spares: x.spares,
+              legsWon: x.legsWon,
+              top: x.top,
+              avg: (snap[x.player] || x.avg || ""),
+              absent: false,
+              position: ""
+            }));
+
+            applyHighlights(block);
+            const sortedBlock = sortByAvgOnlyStable(block);
+            sortedBlock.forEach(r => { html += rowHtml(r); });
+          });
+
+          tbody.innerHTML = html;
+          status.textContent = "Loaded " + data.length + " rows. Matches: " + matchIds.length + ".";
+          return;
+        }
+
+        // ===== SINGLE MATCH: expand roster, show avg for Away players, sort by avg, A N Other last
+        const map = byPlayer[matchId];
+        if (!map) return;
+
+        const rawMatch = matchRows[matchId] || [];
+        const firstRow = rawMatch[0] || { details: "", homeAway: "" };
+        const snapForMatch = snapshots[matchId] || {};
+
+        const expanded = roster.map(name => {
+          const ex = map[name];
+          if (ex) {
+            return {
+              matchId: ex.matchId,
+              details: ex.details,
+              homeAway: ex.homeAway,
+              player: ex.player,
+              score: ex.score,
+              ducks: ex.ducks,
+              spares: ex.spares,
+              legsWon: ex.legsWon,
+              top: ex.top,
+              avg: (snapForMatch[name] || ex.avg || ""),
+              absent: false,
+              position: ""
+            };
+          }
+          return {
+            matchId: matchId,
+            details: firstRow.details,
+            homeAway: firstRow.homeAway,
+            player: name,
+            score: "",
+            ducks: "",
+            spares: "",
+            legsWon: "",
+            top: "",
+            avg: (snapForMatch[name] || ""),  // avg for Away/absent players
+            absent: true,
+            position: ""
+          };
+        });
+
+        // positions ONLY for league matches (played rows only)
+        if (isLeague(firstRow.details)) {
+          const played = expanded
+            .filter(r => r.player !== "A N Other" && !r.absent && Number.isFinite(toNum(r.score)) && toNum(r.score) > 0)
+            .sort((a, b) => toNum(b.score) - toNum(a.score));
+
+          played.forEach((r, idx) => { r.position = String(idx + 1); });
+
+          expanded.forEach(r => {
+            const sc = toNum(r.score);
+            if (!(r.player !== "A N Other" && Number.isFinite(sc) && sc > 0)) r.position = "";
+          });
+        }
+
+        applyHighlights(expanded);
+        const sortedExpanded = sortByAvgOnlyStable(expanded);
+
+        let out = "";
+        sortedExpanded.forEach(r => { out += rowHtml(r); });
+        tbody.innerHTML = out;
+
+        status.textContent = "Loaded " + rawMatch.length + " rows for " + matchId + ".";
+      }
+
+      render("");
+      select.addEventListener("change", () => render(select.value));
+    })
+    .catch(e => {
+      status.style.color = "red";
+      status.textContent = e.message;
+      tbody.innerHTML = "";
+    });
+})();
+</script>
+
+-->
 </body>
-</html>
+</html>  
