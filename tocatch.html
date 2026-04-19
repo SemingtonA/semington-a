@@ -1,230 +1,546 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- ====================== -->
+  <!-- PAGE METADATA -->
+  <!-- ====================== -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>To Catch Next Player Above</title>
 
   <style>
-  body {
-    margin: 0;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    font-family: Arial, sans-serif;
-    background-color: #f5f0e6;
-  }
+    /* ====================== */
+    /* GLOBAL PAGE STYLES */
+    /* ====================== */
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: Arial, sans-serif;
+      background-color: #f5f0e6;
+    }
 
-  /* ===== HEADER ===== */
-  header {
-    padding: 20px;
-  }
-
-  .header-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  header h1 {
-    margin: 0;
-    font-size: 72px;
-    text-align: center;
-    flex: 1;
-  }
-
-  .logo img {
-    width: 300px;
-    height: auto;
-  }
-
-  .nav-buttons {
-    margin-top: 15px;
-    text-align: center;
-  }
-
-  .nav-buttons a {
-    display: inline-block;
-    margin: 6px;
-    padding: 10px 18px;
-    background: #000;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 4px;
-    font-weight: bold;
-  }
-
-  .nav-buttons a:hover {
-    background: #163aa3;
-  }
-
-  /* ===== MAIN ===== */
-  main {
-    flex: 1;
-    padding: 20px;
-  }
-
-  .panel {
-    max-width: 1400px;
-    margin: 10px auto 14px;
-    background: #ffffffcc;
-    border-radius: 8px;
-    padding: 12px;
-  }
-
-  .label {
-    font-size: 12px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 6px;
-  }
-
-  select {
-    width: 100%;
-    padding: 8px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-  }
-
-  #status {
-    margin-top: 8px;
-    font-size: 12px;
-    color: #555;
-  }
-
-  .table-wrap {
-    max-width: 1400px;
-    margin: 0 auto;
-    background: #fff;
-    border-radius: 8px;
-    padding: 12px;
-    overflow-x: auto;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-  }
-
-  th {
-    border-bottom: 1px solid #eee;
-    padding: 8px;
-    white-space: normal;
-    text-align: center;
-    background: #fafafa;
-  }
-
-  td {
-    border-bottom: 1px solid #eee;
-    padding: 8px;
-    white-space: nowrap;
-    text-align: center;
-  }
-
-  td:nth-child(1), th:nth-child(1) {
-    text-align: left;
-  }
-
-  /* ===== FOOTER ===== */
-  footer {
-    margin-top: auto;
-    text-align: center;
-    padding: 16px 20px 22px;
-    font-size: 12px;
-    color: #555;
-  }
-
-  .footer-logo img {
-    width: 60px;
-    opacity: 0.9;
-  }
-
-  /* ===== MOBILE ===== */
-  @media (max-width: 900px) {
+    /* ====================== */
+    /* HEADER */
+    /* ====================== */
+    header { padding: 20px; }
 
     .header-top {
-      flex-direction: column;
-      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
     header h1 {
-      font-size: 32px;
-      margin-top: 10px;
+      margin: 0;
+      font-size: 72px;
+      text-align: center;
+      flex: 1;
     }
 
-    .logo img {
-      width: 150px;
-      margin-bottom: 10px;
+    .logo img { width: 300px; height: auto; }
+
+    /* ====================== */
+    /* NAV BUTTONS */
+    /* ====================== */
+    .nav-buttons {
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .nav-buttons a {
+      display: inline-block;
+      margin: 6px;
+      padding: 10px 18px;
+      background: #000;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+
+    .nav-buttons a:hover { background: #163aa3; }
+
+    /* ====================== */
+    /* MAIN */
+    /* ====================== */
+    main { flex: 1; padding: 20px; }
+
+    .panel {
+      max-width: 1400px;
+      margin: 10px auto 14px;
+      background: #ffffffcc;
+      border-radius: 8px;
+      padding: 12px;
+    }
+
+    .label {
+      font-size: 12px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 6px;
+    }
+
+    select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    #status {
+      margin-top: 8px;
+      font-size: 12px;
+      color: #555;
+    }
+
+    .table-wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 8px;
+      padding: 12px;
+      overflow-x: auto;
     }
 
     table {
-      font-size: 12px;
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
     }
 
-    .footer-logo img {
-      width: 48px;
+    th {
+      border-bottom: 1px solid #eee;
+      padding: 8px;
+      white-space: normal;
+      text-align: center;
+      background: #fafafa;
     }
-  }
+
+    td {
+      border-bottom: 1px solid #eee;
+      padding: 8px;
+      white-space: nowrap;
+      text-align: center;
+    }
+
+    td:nth-child(1), th:nth-child(1) { text-align: left; }
+
+    /* ====================== */
+    /* FOOTER */
+    /* ====================== */
+    footer {
+      margin-top: auto;
+      text-align: center;
+      padding: 16px 20px 22px;
+      font-size: 12px;
+      color: #555;
+    }
+
+    .footer-logo img { width: 60px; opacity: 0.9; }
+
+    /* ====================== */
+    /* MOBILE */
+    /* ====================== */
+    @media (max-width: 900px) {
+      .header-top { flex-direction: column; text-align: center; }
+      header h1 { font-size: 32px; margin-top: 10px; }
+      .logo img { width: 150px; margin-bottom: 10px; }
+      table { font-size: 12px; }
+      .footer-logo img { width: 48px; }
+    }
   </style>
 </head>
 
 <body>
 
-<header>
-  <div class="header-top">
-    <h1>To Catch Next Player Above</h1>
-
-    <div class="logo">
-      <img src="Semington A Logo 5.jpg" alt="Semington A Logo">
+  <!-- ====================== -->
+  <!-- PAGE HEADER -->
+  <!-- ====================== -->
+  <header>
+    <div class="header-top">
+      <h1>To Catch Next Player Above</h1>
+      <div class="logo">
+        <img src="Semington A Logo 5.jpg" alt="Semington A Logo">
+      </div>
     </div>
-  </div>
 
+    <!-- ====================== -->
+    <!-- NAVIGATION (LIVE PATHS) -->
+    <!-- ====================== -->
   <div class="nav-buttons">
     <a href="/semington-a/index.html">Home</a>
-    <a href="/semington-a/fixtures.html">Fixtures &amp; Results</a>
+    <a href="/semington-a/fixtures.html">Fixtures & Results</a>
     <a href="/semington-a/match-results.html">Match Results</a>
     <a href="/semington-a/tocatch.html">To Catch</a>
     <a href="/semington-a/gallery.html">Gallery</a>
     <a href="/semington-a/rules.html">Rules</a>
   </div>
-</header>
+  </header>
 
-<main>
+  <!-- ====================== -->
+  <!-- MAIN CONTENT -->
+  <!-- ====================== -->
+  <main>
 
-  <div class="panel">
-    <div class="label">Filter by League Match (Cup matches excluded)</div>
-    <select id="matchSelect">
-      <option value="">Latest League Match</option>
-    </select>
-    <div id="status"></div>
-  </div>
+    <!-- ====================== -->
+    <!-- LAST UPDATED DISPLAY -->
+    <!-- Reads UpdatedAt / Updated At from csv_export.csv -->
+    <!-- ====================== -->
+    <div id="lastUpdated"
+         style="text-align:center; font-size:12px; margin:0 0 12px; color:#555;">
+      Last updated: —
+    </div>
 
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Player</th>
-          <th>Total Match Pins</th>
-          <th>Games (to date)</th>
-          <th>Avg</th>
-          <th>Pins Behind Player Above</th>
-        </tr>
-      </thead>
-      <tbody id="tableBody"></tbody>
-    </table>
-  </div>
+    <!-- ====================== -->
+    <!-- FILTER PANEL -->
+    <!-- ====================== -->
+    <div class="panel">
+      <div class="label">Filter by League Match (Cup matches excluded)</div>
+      <select id="matchSelect">
+        <option value="">Latest League Match</option>
+      </select>
+      <div id="status"></div>
+    </div>
 
-</main>
+    <!-- ====================== -->
+    <!-- TO CATCH TABLE -->
+    <!-- ====================== -->
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Player</th>
+            <th>Total Match Pins</th>
+            <th>Games (to date)</th>
+            <th>Avg</th>
+            <th>Pins Behind Player Above</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
 
-<footer>
-  © Semington A Skittles Team
-  <div class="footer-logo">
-    <img src="Semington A Logo 5.jpg" alt="Logo">
-  </div>
-</footer>
+  </main>
 
-<script src="/semington-a/tocatch.js"></script>
+  <!-- ====================== -->
+  <!-- FOOTER -->
+  <!-- ====================== -->
+  <footer>
+    © Semington A Skittles Team
+    <div class="footer-logo">
+      <img src="Semington A Logo 5.jpg" alt="Logo">
+    </div>
+  </footer>
+
+  <!-- ====================== -->
+  <!-- INLINE SCRIPT (To Catch + Last Updated) -->
+  <!-- Data source: csv_export.csv -->
+  <!-- ====================== -->
+  <script>
+  document.addEventListener("DOMContentLoaded", function () {
+
+    /* ---------- helpers ---------- */
+    function trim(v){ return (v === undefined || v === null) ? "" : String(v).trim(); }
+
+    // Simple CSV parser with quotes support (so commas in text don't break columns)
+    function parseCSV(text){
+      var rows = [];
+      var row = [];
+      var cur = "";
+      var inQuotes = false;
+
+      for (var i = 0; i < text.length; i++) {
+        var ch = text[i];
+
+        if (ch === '"') {
+          // double quote inside quotes -> literal quote
+          if (inQuotes && text[i+1] === '"') { cur += '"'; i++; }
+          else inQuotes = !inQuotes;
+        } else if (ch === ',' && !inQuotes) {
+          row.push(cur);
+          cur = "";
+        } else if ((ch === '\n' || ch === '\r') && !inQuotes) {
+          if (ch === '\r' && text[i+1] === '\n') i++;
+          row.push(cur);
+          cur = "";
+          if (row.length > 1 || row[0] !== "") rows.push(row);
+          row = [];
+        } else {
+          cur += ch;
+        }
+      }
+      if (cur.length || row.length) {
+        row.push(cur);
+        if (row.length > 1 || row[0] !== "") rows.push(row);
+      }
+      return rows;
+    }
+
+    function cleanHeader(h){ return trim(h).replace(/:$/,"").replace(/\s+$/,""); }
+    function toNum(v){ var n = Number(trim(v)); return isFinite(n) ? n : NaN; }
+
+    function parseDMY(s){
+      // expects dd/mm/yyyy
+      var m = String(s || "").match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+      if(!m) return null;
+      return new Date(Number(m[3]), Number(m[2])-1, Number(m[1]));
+    }
+
+    function isCup(details){ return /cup/i.test(details || ""); }
+
+    // treat League / Premier / Division as league-style matches, but exclude cup
+    function isLeagueLike(details){
+      var d = (details || "").toLowerCase();
+      if (d.indexOf("cup") !== -1) return false;
+      return (d.indexOf("league") !== -1) || (d.indexOf("premier") !== -1) || (d.indexOf("division") !== -1);
+    }
+
+    // robust fetch: try local file first, then /semington-a/
+    function fetchText(url){
+      return fetch(url, { cache:"no-store" }).then(function(r){
+        if(!r.ok) throw new Error(url + " not found");
+        return r.text();
+      });
+    }
+
+    function fetchCsvExport(){
+      return fetchText("csv_export.csv").catch(function(){
+        return fetchText("/semington-a/csv_export.csv");
+      });
+    }
+
+    /* ---------- elements ---------- */
+    var tbody  = document.getElementById("tableBody");
+    var status = document.getElementById("status");
+    var select = document.getElementById("matchSelect");
+    var lastEl = document.getElementById("lastUpdated");
+
+    status.textContent = "Loading league matches…";
+
+    /* ---------- load csv_export.csv once and use it for BOTH To Catch + Last updated ---------- */
+    fetchCsvExport()
+      .then(function(text){
+
+        var grid = parseCSV(text);
+        if (!grid || grid.length < 2) throw new Error("csv_export.csv is empty");
+
+        // header row is first row in your export [1](https://outlook.live.com/owa/?ItemID=AQMkADAwATE0OTQwLTUyMgBkLTJkOWEtMDACLTAwCgBGAAADFvyS4gBJBkKZOuA2Qf%2fEowcAes2SqILv1UGRPAwF7jIkigAAAgEMAAAAes2SqILv1UGRPAwF7jIkigAI2JP%2fOQAAAA%3d%3d&exvsurl=1&viewmodel=ReadMessageItem)[2](https://outlook.live.com/owa/?ItemID=AQMkADAwATE0OTQwLTUyMgBkLTJkOWEtMDACLTAwCgBGAAADFvyS4gBJBkKZOuA2Qf%2fEowcAes2SqILv1UGRPAwF7jIkigAAAgEMAAAAes2SqILv1UGRPAwF7jIkigAI0v3ZWgAAAA%3d%3d&exvsurl=1&viewmodel=ReadMessageItem)
+        var headers = [];
+        for (var h = 0; h < grid[0].length; h++) headers.push(cleanHeader(grid[0][h]));
+
+        // indexes we care about (csv_export.csv has these columns) [1](https://outlook.live.com/owa/?ItemID=AQMkADAwATE0OTQwLTUyMgBkLTJkOWEtMDACLTAwCgBGAAADFvyS4gBJBkKZOuA2Qf%2fEowcAes2SqILv1UGRPAwF7jIkigAAAgEMAAAAes2SqILv1UGRPAwF7jIkigAI2JP%2fOQAAAA%3d%3d&exvsurl=1&viewmodel=ReadMessageItem)[2](https://outlook.live.com/owa/?ItemID=AQMkADAwATE0OTQwLTUyMgBkLTJkOWEtMDACLTAwCgBGAAADFvyS4gBJBkKZOuA2Qf%2fEowcAes2SqILv1UGRPAwF7jIkigAAAgEMAAAAes2SqILv1UGRPAwF7jIkigAI0v3ZWgAAAA%3d%3d&exvsurl=1&viewmodel=ReadMessageItem)
+        function idx(name){ return headers.indexOf(name); }
+
+        var iMatchId   = idx("Match ID");
+        var iMatchDate = idx("Match Date");
+        if (iMatchDate === -1) iMatchDate = idx("Match Date:"); // sometimes "Match Date:" shows up [1](https://outlook.live.com/owa/?ItemID=AQMkADAwATE0OTQwLTUyMgBkLTJkOWEtMDACLTAwCgBGAAADFvyS4gBJBkKZOuA2Qf%2fEowcAes2SqILv1UGRPAwF7jIkigAAAgEMAAAAes2SqILv1UGRPAwF7jIkigAI2JP%2fOQAAAA%3d%3d&exvsurl=1&viewmodel=ReadMessageItem)[2](https://outlook.live.com/owa/?ItemID=AQMkADAwATE0OTQwLTUyMgBkLTJkOWEtMDACLTAwCgBGAAADFvyS4gBJBkKZOuA2Qf%2fEowcAes2SqILv1UGRPAwF7jIkigAAAgEMAAAAes2SqILv1UGRPAwF7jIkigAI0v3ZWgAAAA%3d%3d&exvsurl=1&viewmodel=ReadMessageItem)
+        var iDetails   = idx("Match Details");
+        var iPlayer    = idx("Semington A Player Name");
+        var iScore     = idx("Total Score");
+
+        var iUpdated   = idx("UpdatedAt");
+        if (iUpdated === -1) iUpdated = idx("Updated At"); // both appear in your exports [1](https://outlook.live.com/owa/?ItemID=AQMkADAwATE0OTQwLTUyMgBkLTJkOWEtMDACLTAwCgBGAAADFvyS4gBJBkKZOuA2Qf%2fEowcAes2SqILv1UGRPAwF7jIkigAAAgEMAAAAes2SqILv1UGRPAwF7jIkigAI2JP%2fOQAAAA%3d%3d&exvsurl=1&viewmodel=ReadMessageItem)[2](https://outlook.live.com/owa/?ItemID=AQMkADAwATE0OTQwLTUyMgBkLTJkOWEtMDACLTAwCgBGAAADFvyS4gBJBkKZOuA2Qf%2fEowcAes2SqILv1UGRPAwF7jIkigAAAgEMAAAAes2SqILv1UGRPAwF7jIkigAI0v3ZWgAAAA%3d%3d&exvsurl=1&viewmodel=ReadMessageItem)
+
+        if (iMatchId === -1 || iDetails === -1 || iPlayer === -1 || iScore === -1) {
+          throw new Error("csv_export.csv missing required columns for To Catch");
+        }
+
+        /* ---------- Last updated ---------- */
+        if (lastEl && iUpdated !== -1) {
+          var latest = "";
+          for (var r = 1; r < grid.length; r++) {
+            var v = trim(grid[r][iUpdated]);
+            if (v && v > latest) latest = v;
+          }
+        if (latest) {
+  var datePart = latest.split(" ")[0];   // "04/12/2026"
+  var parts = datePart.split("/");       // ["04","12","2026"]
+
+  var d = new Date(
+    Number(parts[2]),        // year
+    Number(parts[1]) - 1,    // month (0-based)
+    Number(parts[0])         // day
+  );
+
+  lastEl.textContent =
+    "Last updated: " +
+    d.toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    });
+}
+        }
+
+        /* ---------- Build match map (league-like only; cup excluded) ---------- */
+        var matchMap = {};   // matchId -> array of {player, score}
+        var matchDateMap = {}; // matchId -> date object for sorting
+
+        for (var r2 = 1; r2 < grid.length; r2++) {
+          var row = grid[r2];
+
+          var matchId = trim(row[iMatchId]);
+          var details = trim(row[iDetails]);
+          var player  = trim(row[iPlayer]);
+          var score   = trim(row[iScore]);
+
+          if (!matchId || !player) continue;
+          if (!isLeagueLike(details)) continue; // cup excluded; league/premier ok
+          if (player === "A N Other") continue;
+
+          var sc = toNum(score);
+          if (!isFinite(sc)) continue;
+
+          if (!matchMap[matchId]) matchMap[matchId] = [];
+          matchMap[matchId].push({ player: player, score: sc });
+
+          if (!matchDateMap[matchId]) {
+            var dObj = (iMatchDate !== -1) ? parseDMY(row[iMatchDate]) : null;
+            if (!dObj) dObj = parseDMY(matchId); // fallback: matchId often starts with dd/mm/yyyy
+            matchDateMap[matchId] = dObj;
+          }
+        }
+
+        var matchIds = Object.keys(matchMap);
+        if (!matchIds.length) {
+          status.style.color = "red";
+          status.textContent = "No league matches found (cup excluded).";
+          return;
+        }
+
+        // sort newest first
+        matchIds.sort(function(a,b){
+          var da = matchDateMap[a], db = matchDateMap[b];
+          if (!da && !db) return 0;
+          if (!da) return 1;
+          if (!db) return -1;
+          return db - da;
+        });
+
+        // populate dropdown
+        while (select.options.length > 1) select.remove(1);
+        for (var mi = 0; mi < matchIds.length; mi++) {
+          var opt = document.createElement("option");
+          opt.value = matchIds[mi];
+          opt.textContent = matchIds[mi];
+          select.appendChild(opt);
+        }
+
+        /* ---------- Build cumulative snapshots oldest->newest ---------- */
+        var matchIdsAsc = matchIds.slice().reverse();
+        var pins = {};       // player -> total pins to date
+        var games = {};      // player -> games to date
+        var snapshots = {};  // matchId -> {pins, games, matchPins}
+
+        // roster
+        var rosterMap = {};
+        for (var mi2 = 0; mi2 < matchIds.length; mi2++) {
+          var arr = matchMap[matchIds[mi2]];
+          for (var j2 = 0; j2 < arr.length; j2++) rosterMap[arr[j2].player] = true;
+        }
+        var roster = Object.keys(rosterMap).sort(function(a,b){ return a.localeCompare(b); });
+
+        for (var aidx = 0; aidx < matchIdsAsc.length; aidx++) {
+          var id = matchIdsAsc[aidx];
+          var rowsForMatch = matchMap[id];
+          var matchPins = {};
+
+          for (var k = 0; k < rowsForMatch.length; k++) {
+            var rr = rowsForMatch[k];
+            if (!pins[rr.player]) pins[rr.player] = 0;
+            if (!games[rr.player]) games[rr.player] = 0;
+            pins[rr.player] += rr.score;
+            games[rr.player] += 1;
+            matchPins[rr.player] = rr.score;
+          }
+
+          // clone snapshot
+          var snapPins = {}, snapGames = {}, snapMatchPins = {};
+          for (var p in pins) snapPins[p] = pins[p];
+          for (var gk in games) snapGames[gk] = games[gk];
+          for (var mp in matchPins) snapMatchPins[mp] = matchPins[mp];
+
+          snapshots[id] = { pins: snapPins, games: snapGames, matchPins: snapMatchPins };
+        }
+
+        function renderForMatch(matchId){
+          tbody.innerHTML = "";
+          if (!matchId) matchId = matchIds[0];
+          var snap = snapshots[matchId];
+          if (!snap) return;
+
+          // build output list
+          var out = [];
+          for (var i = 0; i < roster.length; i++) {
+            var pl = roster[i];
+            var g = snap.games[pl] || 0;
+            var tp = snap.pins[pl] || 0;
+            var avgNum = (g > 0) ? (tp / g) : NaN;
+
+            var matchPin = (snap.matchPins.hasOwnProperty(pl)) ? String(snap.matchPins[pl]) : "Away";
+
+            out.push({
+              player: pl,
+              matchPins: matchPin,
+              games: g,
+              avgNum: avgNum,
+              avg: isFinite(avgNum) ? avgNum.toFixed(1) : "",
+              toCatch: ""
+            });
+          }
+
+          // sort by avg desc
+          out.sort(function(a,b){
+            var aa = isFinite(a.avgNum) ? a.avgNum : -Infinity;
+            var bb = isFinite(b.avgNum) ? b.avgNum : -Infinity;
+            if (bb !== aa) return bb - aa;
+            return a.player.localeCompare(b.player);
+          });
+
+          // To Catch = (AvgAbove − AvgMe) × GamesMe
+          for (var r = 0; r < out.length; r++) {
+            if (r === 0) out[r].toCatch = "0";
+            else {
+              var above = out[r-1], me = out[r];
+              if (!isFinite(above.avgNum) || !isFinite(me.avgNum) || !isFinite(me.games)) out[r].toCatch = "";
+              else {
+                var diff = (above.avgNum - me.avgNum) * me.games;
+                diff = Math.round(diff);
+                if (diff < 0) diff = 0;
+                out[r].toCatch = String(diff);
+              }
+            }
+          }
+
+          // render table
+          for (var r3 = 0; r3 < out.length; r3++) {
+            var row = out[r3];
+            tbody.innerHTML +=
+              "<tr>" +
+                "<td>" + row.player + "</td>" +
+                "<td>" + row.matchPins + "</td>" +
+                "<td>" + row.games + "</td>" +
+                "<td>" + row.avg + "</td>" +
+                "<td>" + row.toCatch + "</td>" +
+              "</tr>";
+          }
+
+          status.textContent = "League match: " + matchId + " (Cup excluded; sorted by Avg).";
+        }
+
+        renderForMatch(select.value);
+        select.addEventListener("change", function(){ renderForMatch(select.value); });
+      })
+      .catch(function(e){
+        status.style.color = "red";
+        status.textContent = e.message;
+        console.error(e);
+      });
+
+  });
+  </script>
 
 </body>
 </html>
