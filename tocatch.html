@@ -321,19 +321,12 @@
   const raw = String(grid[1][idx] || "").trim();
   if (!raw) return;
 
-  // Remove weekday prefix (e.g. "Sunday/")
-  let s = raw;
-  const slash = s.indexOf("/");
-  if (slash > 0 && /^[A-Za-z]+$/.test(s.slice(0, slash))) {
-    s = s.slice(slash + 1);
-  }
+// Example raw: "Sunday, 26 April 2026 at 09:21"
+let cleaned = raw.replace(" at ", " "); // remove "at"
+const date = new Date(cleaned);
+if (isNaN(date)) return;
+
       
-// Parse dd/mm/yyyy hh:mm
-const m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})\s+(\d{1,2}):(\d{2})$/);
-if (!m) return;
-
-const date = new Date(m[3], m[2] - 1, m[1], m[4], m[5]);
-
 const formatted = date.toLocaleString("en-GB", {
   weekday: "long",
   day: "numeric",
