@@ -273,43 +273,55 @@
   </div>
 </footer>
 
+
 <script>
 (function(){
   const wrapper = document.querySelector('.table-wrapper');
   const table = document.getElementById('contributionsTable');
-  if (!table) return;
+  if (!table || !wrapper) return;
 
   // Defensive CSS
-  if (wrapper) {
-    wrapper.style.overflowX = wrapper.style.overflowX || 'auto';
-    wrapper.style.overscrollBehavior = wrapper.style.overscrollBehavior || 'contain';
-    wrapper.style.touchAction = wrapper.style.touchAction || 'pan-x';
-    wrapper.style.webkitOverflowScrolling = wrapper.style.webkitOverflowScrolling || 'touch';
-  }
+  document.documentElement.style.overflowX = document.documentElement.style.overflowX || 'hidden';
+  document.body.style.overflowX = document.body.style.overflowX || 'hidden';
+  wrapper.style.overflowX = wrapper.style.overflowX || 'auto';
+  wrapper.style.touchAction = wrapper.style.touchAction || 'pan-x';
+  wrapper.style.webkitOverflowScrolling = wrapper.style.webkitOverflowScrolling || 'touch';
+  wrapper.style.overscrollBehavior = wrapper.style.overscrollBehavior || 'contain';
 
-  // Compute sensible min-width after table is populated
+  // Ensure sensible min-width (adjust perCol if needed)
   const firstRow = table.querySelector('tr');
   const cols = firstRow ? firstRow.querySelectorAll('th,td').length : 0;
   const perCol = 120;
   table.style.minWidth = Math.max(720, cols * perCol) + 'px';
 
-  // Install touch handler to stop horizontal gestures from propagating to the document
-  if (wrapper && !wrapper._hcApplied) {
-    let startX = 0, startY = 0, isHorizontal = false;
-    wrapper.addEventListener('touchstart', function(e){
+  // Edge-safe touch handler: stop propagation for horizontal drags,
+  // and preventDefault only when at left/right edge to stop page bounce.
+  if (!wrapper._edgeSafeApplied) {
+    let sx = 0, sy = 0, horiz = false;
+    wrapper.addEventListener('touchstart', e => {
       const t = e.touches[0];
-      startX = t.clientX; startY = t.clientY; isHorizontal = false;
+      sx = t.clientX; sy = t.clientY; horiz = false;
     }, { passive: true });
 
     wrapper.addEventListener('touchmove', function(e){
       const t = e.touches[0];
-      const dx = Math.abs(t.clientX - startX);
-      const dy = Math.abs(t.clientY - startY);
-      if (!isHorizontal && dx > 10 && dx > dy) isHorizontal = true;
-      if (isHorizontal) e.stopPropagation();
+      const dx = t.clientX - sx;
+      const adx = Math.abs(dx);
+      const dy = Math.abs(t.clientY - sy);
+
+      if (!horiz && adx > 10 && adx > dy) horiz = true;
+      if (!horiz) return;
+
+      // Stop propagation so the document doesn't receive the gesture
+      e.stopPropagation();
+
+      // If at left edge and swiping right, or at right edge and swiping left, prevent default to stop page bounce
+      const atLeft = wrapper.scrollLeft <= 0 && dx > 0;
+      const atRight = wrapper.scrollLeft + wrapper.clientWidth >= wrapper.scrollWidth && dx < 0;
+      if (atLeft || atRight) e.preventDefault();
     }, { passive: false });
 
-    wrapper._hcApplied = true;
+    wrapper._edgeSafeApplied = true;
   }
 })();
 </script>
