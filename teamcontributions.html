@@ -175,16 +175,17 @@
   }
 
   /* Team Contributions: confine horizontal scroll to the table */
-  .table-wrapper {
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    overscroll-behavior-x: contain;
-    position: relative;
-    -ms-overflow-style: -ms-autohiding-scrollbar;
-    scrollbar-width: thin;
-    margin: 0.75rem 0;
-    touch-action: pan-x;
+  html, body { overflow-x: hidden; overscroll-behavior-x: none; }
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  touch-action: pan-x;
+  position: relative;
+}
+#contributionsTable { min-width: 720px; table-layout: fixed; }
+
   }
 
   #contributionsTable,
