@@ -176,7 +176,6 @@
   }
 
   /* ===== Team Contributions / wide tables: horizontal scroll confined to the table ===== */
-  /* Wrap your table in <div class="table-wrapper"> ... </div> */
   .table-wrapper {
     width: 100%;
     overflow-x: auto;                    /* allow horizontal scroll inside wrapper */
@@ -186,16 +185,21 @@
     -ms-overflow-style: -ms-autohiding-scrollbar;
     scrollbar-width: thin;
     margin: 0.75rem 0;
+    touch-action: pan-x;                  /* ensure horizontal pan is allowed inside wrapper */
   }
 
-  /* Make the table wider than the viewport so it scrolls horizontally */
-  .contrib-table, .table-wrapper table {
+  /* Target your actual table id (or change to .contrib-table if you add that class) */
+  #contributionsTable,
+  .contrib-table,
+  .table-wrapper table {
     width: 100%;
-    min-width: 720px;       /* adjust to match your column count; lower if you have fewer columns */
+    min-width: 720px;       /* adjust to match your column count; increase if needed */
     border-collapse: collapse;
     table-layout: fixed;    /* keeps column widths stable while scrolling */
   }
 
+  #contributionsTable th,
+  #contributionsTable td,
   .contrib-table th,
   .contrib-table td,
   .table-wrapper th,
@@ -216,15 +220,19 @@
     height: 100%;
     width: 3rem;
     background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1));
-  }
-
-  /* Smaller phones: reduce min-width so table still scrolls but not excessively wide */
-  @media (max-width: 480px) {
-    .contrib-table, .table-wrapper table { min-width: 560px; }
-    header h1 { font-size: 28px; }
-    .logo img { width: 120px; }
+    z-index: 2;
   }
 }
+
+/* Smaller phones: separate media query (must NOT be nested) */
+@media (max-width: 480px) {
+  #contributionsTable,
+  .contrib-table,
+  .table-wrapper table { min-width: 560px; }
+  header h1 { font-size: 28px; }
+  .logo img { width: 120px; }
+}
+
 
   </style>
 </head>
@@ -257,9 +265,12 @@
   <div id="divisionDisplay"></div>
 
   <!-- CLEAN TABLE — NO TBODY -->
-  <table id="contributionsTable"></table>
+  <div class="table-wrapper">
+    <table id="contributionsTable" class="contrib-table"></table>
+  </div>
 
 </main>
+
 
 <footer>
   © Semington A Skittles Team
