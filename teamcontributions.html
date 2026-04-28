@@ -174,29 +174,33 @@
     width: 48px;
   }
 
-  /* Team Contributions: confine horizontal scroll to the table */
-  html, body { overflow-x: hidden; overscroll-behavior-x: none; }
-.table-wrapper {
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
-  touch-action: pan-x;
-  position: relative;
-}
-#contributionsTable { min-width: 720px; table-layout: fixed; }
-
+  /* Confine horizontal scroll to the table wrapper */
+  html, body {
+    overflow-x: hidden;
+    overscroll-behavior-x: none;
   }
 
+  .table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    touch-action: pan-x;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Let the table size itself and use min-width to force horizontal scroll */
   #contributionsTable,
   .contrib-table,
   .table-wrapper table {
-    width: 100%;
+    width: auto !important;
     min-width: 720px;
     border-collapse: collapse;
     table-layout: fixed;
   }
 
+  /* Cell layout */
   #contributionsTable th,
   #contributionsTable td,
   .contrib-table th,
@@ -207,6 +211,7 @@
     overflow: hidden;
   }
 
+  /* Optional visual hint that table can scroll */
   .table-wrapper::after {
     content: "";
     pointer-events: none;
@@ -220,13 +225,21 @@
   }
 }
 
-/* Smaller phones: separate media query (must NOT be nested) */
+/* Smaller phones */
 @media (max-width: 480px) {
   #contributionsTable,
   .contrib-table,
-  .table-wrapper table { min-width: 560px; }
-  header h1 { font-size: 28px; }
-  .logo img { width: 120px; }
+  .table-wrapper table {
+    min-width: 560px;
+  }
+
+  header h1 {
+    font-size: 28px;
+  }
+
+  .logo img {
+    width: 120px;
+  }
 }
 
 
