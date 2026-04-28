@@ -166,7 +166,7 @@
     margin-bottom: 10px;
   }
 
-  table {
+  th, td {
     font-size: 12px;
   }
 
@@ -174,12 +174,13 @@
     width: 48px;
   }
 
-  /* Confine horizontal scroll to the table wrapper */
+  /* Prevent page-level horizontal scroll */
   html, body {
     overflow-x: hidden;
     overscroll-behavior-x: none;
   }
 
+  /* Confine horizontal scrolling to the wrapper */
   .table-wrapper {
     width: 100%;
     overflow-x: auto;
@@ -190,17 +191,17 @@
     z-index: 1;
   }
 
-  /* Let the table size itself and use min-width to force horizontal scroll */
+  /* Let the table size itself; min-width forces horizontal scroll inside wrapper */
   #contributionsTable,
   .contrib-table,
   .table-wrapper table {
     width: auto !important;
-    min-width: 720px;
+    min-width: 900px; /* same approach as Fixtures: adjust if you need narrower */
     border-collapse: collapse;
     table-layout: fixed;
   }
 
-  /* Cell layout */
+  /* Cells: keep content on one line and show ellipsis */
   #contributionsTable th,
   #contributionsTable td,
   .contrib-table th,
@@ -211,7 +212,7 @@
     overflow: hidden;
   }
 
-  /* Optional visual hint that table can scroll */
+  /* Visual hint that table can scroll */
   .table-wrapper::after {
     content: "";
     pointer-events: none;
@@ -241,6 +242,7 @@
     width: 120px;
   }
 }
+
 
 
 
