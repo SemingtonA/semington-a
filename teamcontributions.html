@@ -273,17 +273,50 @@
   </div>
 </footer>
 
-<head>
-  ...
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    /* paste the .table-wrapper and table rules here */
-    .table-wrapper { width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; overscroll-behavior-x:contain; touch-action:pan-x; margin:0.75rem 0; }
-    #contributionsTable, .contrib-table, .table-wrapper table { width:auto; min-width:720px; table-layout:fixed; }
-    #contributionsTable th, #contributionsTable td { white-space:nowrap; padding:0.5rem 0.75rem; text-overflow:ellipsis; overflow:hidden; }
-    html,body { overflow-x:hidden; } /* optional: prevent page-level horizontal pan */
-  </style>
-</head>
+// Defensive sizing + install horizontal-capture fallback
+    (function(){
+      const wrapper = document.querySelector('.table-wrapper');
+      const table = document.getElementById('contributionsTable');
+
+      // Ensure wrapper CSS is present (defensive)
+      if (wrapper) {
+        wrapper.style.overflowX = wrapper.style.overflowX || 'auto';
+        wrapper.style.overscrollBehavior = wrapper.style.overscrollBehavior || 'contain';
+        wrapper.style.touchAction = wrapper.style.touchAction || 'pan-x';
+      }
+
+      // Compute sensible min-width after table is populated
+      if (table) {
+        const firstRow = table.querySelector('tr');
+        const cols = firstRow ? firstRow.querySelectorAll('th,td').length : 0;
+        const perCol = 120; // adjust if your columns need more space
+        table.style.minWidth = Math.max(720, cols * perCol) + 'px';
+      }
+           <!-- Scripts: place at end of body so DOM exists -->
+  <script>
+      // Install touch handler to stop horizontal gestures from propagating to the document
+      if (wrapper && !wrapper._hcApplied) {
+        let startX = 0, startY = 0, isHorizontal = false;
+        wrapper.addEventListener('touchstart', function(e){
+          const t = e.touches[0];
+          startX = t.clientX; startY = t.clientY; isHorizontal = false;
+        }, { passive: true });
+
+        wrapper.addEventListener('touchmove', function(e){
+          const t = e.touches[0];
+          const dx = Math.abs(t.clientX - startX);
+          const dy = Math.abs(t.clientY - startY);
+          if (!isHorizontal && dx > 10 && dx > dy) isHorizontal = true;
+          if (isHorizontal) {
+            // stop propagation so the document doesn't pan; do not preventDefault()
+            e.stopPropagation();
+          }
+        }, { passive: false });
+
+        wrapper._hcApplied = true;
+      }
+    })();
+    <script>
 
 <script>
 window.addEventListener("error", e => console.error("Global error:", e.message, e.filename + ":" + e.lineno));
