@@ -273,6 +273,17 @@
   </div>
 </footer>
 
+<head>
+  ...
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    /* paste the .table-wrapper and table rules here */
+    .table-wrapper { width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; overscroll-behavior-x:contain; touch-action:pan-x; margin:0.75rem 0; }
+    #contributionsTable, .contrib-table, .table-wrapper table { width:auto; min-width:720px; table-layout:fixed; }
+    #contributionsTable th, #contributionsTable td { white-space:nowrap; padding:0.5rem 0.75rem; text-overflow:ellipsis; overflow:hidden; }
+    html,body { overflow-x:hidden; } /* optional: prevent page-level horizontal pan */
+  </style>
+</head>
 
 <script>
 window.addEventListener("error", e => console.error("Global error:", e.message, e.filename + ":" + e.lineno));
