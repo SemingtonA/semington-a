@@ -144,31 +144,88 @@
     opacity: 0.9;
   }
 
-  /* ===== MOBILE ===== */
-  @media (max-width: 900px) {
-    .header-top {
-      flex-direction: column;
-      text-align: center;
-    }
-
-    header h1 {
-      font-size: 32px;
-      margin-top: 10px;
-    }
-
-    .logo img {
-      width: 150px;
-      margin-bottom: 10px;
-    }
-
-    table {
-      font-size: 12px;
-    }
-
-    .footer-logo img {
-      width: 48px;
-    }
+/* ===== MOBILE ===== */
+@media (max-width: 900px) {
+  /* Header layout for small screens */
+  .header-top {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    gap: 0.5rem;
   }
+
+  header h1 {
+    font-size: 32px;
+    margin: 10px 0 0 0;
+    white-space: normal; /* allow wrapping on narrow screens */
+  }
+
+  .logo img {
+    width: 150px;
+    height: auto;
+    margin-bottom: 10px;
+  }
+
+  /* Body text / table font sizing */
+  table {
+    font-size: 12px;
+  }
+
+  .footer-logo img {
+    width: 48px;
+  }
+
+  /* ===== Team Contributions / wide tables: horizontal scroll confined to the table ===== */
+  /* Wrap your table in <div class="table-wrapper"> ... </div> */
+  .table-wrapper {
+    width: 100%;
+    overflow-x: auto;                    /* allow horizontal scroll inside wrapper */
+    -webkit-overflow-scrolling: touch;    /* smooth momentum on iOS */
+    overscroll-behavior: contain;         /* keep horizontal swipes from scrolling the page */
+    position: relative;                   /* for optional fade hint pseudo-element */
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    scrollbar-width: thin;
+    margin: 0.75rem 0;
+  }
+
+  /* Make the table wider than the viewport so it scrolls horizontally */
+  .contrib-table, .table-wrapper table {
+    width: 100%;
+    min-width: 720px;       /* adjust to match your column count; lower if you have fewer columns */
+    border-collapse: collapse;
+    table-layout: fixed;    /* keeps column widths stable while scrolling */
+  }
+
+  .contrib-table th,
+  .contrib-table td,
+  .table-wrapper th,
+  .table-wrapper td {
+    padding: 0.5rem 0.75rem;
+    white-space: nowrap;    /* prevents wrapping inside cells so the table scrolls horizontally */
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  /* Optional visual hint: subtle right-edge fade to indicate more content */
+  .table-wrapper::after {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 3rem;
+    background: linear-gradient(to right, rgba(255,255,255,0), rgba(255,255,255,1));
+  }
+
+  /* Smaller phones: reduce min-width so table still scrolls but not excessively wide */
+  @media (max-width: 480px) {
+    .contrib-table, .table-wrapper table { min-width: 560px; }
+    header h1 { font-size: 28px; }
+    .logo img { width: 120px; }
+  }
+}
+
   </style>
 </head>
 
@@ -178,7 +235,8 @@
   <div class="header-top">
     <h1>Team Contributions</h1>
 
-    <div class="logo">
+
+  <div class="logo">
       <img src="Semington A Logo 5.jpg" alt="Semington A Logo">
     </div>
   <!-- Main site navigation -->
