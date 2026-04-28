@@ -145,15 +145,19 @@
   }
 
 /* ===== MOBILE ===== */
-<div class="table-wrapper">
-  <table id="contributionsTable" class="contrib-table"></table>
-</div>
-
+@media (max-width: 900px) {
+  /* Header layout for small screens */
+  .header-top {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    gap: 0.5rem;
+  }
 
   header h1 {
     font-size: 32px;
     margin: 10px 0 0 0;
-    white-space: normal; /* allow wrapping on narrow screens */
+    white-space: normal;
   }
 
   .logo img {
@@ -162,7 +166,6 @@
     margin-bottom: 10px;
   }
 
-  /* Body text / table font sizing */
   table {
     font-size: 12px;
   }
@@ -171,42 +174,38 @@
     width: 48px;
   }
 
-  /* ===== Team Contributions / wide tables: horizontal scroll confined to the table ===== */
+  /* Team Contributions: confine horizontal scroll to the table */
   .table-wrapper {
     width: 100%;
-    overflow-x: auto;                    /* allow horizontal scroll inside wrapper */
-    -webkit-overflow-scrolling: touch;    /* smooth momentum on iOS */
-    overscroll-behavior: contain;         /* keep horizontal swipes from scrolling the page */
-    position: relative;                   /* for optional fade hint pseudo-element */
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    position: relative;
     -ms-overflow-style: -ms-autohiding-scrollbar;
     scrollbar-width: thin;
     margin: 0.75rem 0;
-    touch-action: pan-x;                  /* ensure horizontal pan is allowed inside wrapper */
+    touch-action: pan-x;
   }
 
-  /* Target your actual table id (or change to .contrib-table if you add that class) */
   #contributionsTable,
   .contrib-table,
   .table-wrapper table {
     width: 100%;
-    min-width: 720px;       /* adjust to match your column count; increase if needed */
+    min-width: 720px;
     border-collapse: collapse;
-    table-layout: fixed;    /* keeps column widths stable while scrolling */
+    table-layout: fixed;
   }
 
   #contributionsTable th,
   #contributionsTable td,
   .contrib-table th,
-  .contrib-table td,
-  .table-wrapper th,
-  .table-wrapper td {
+  .contrib-table td {
     padding: 0.5rem 0.75rem;
-    white-space: nowrap;    /* prevents wrapping inside cells so the table scrolls horizontally */
+    white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
   }
 
-  /* Optional visual hint: subtle right-edge fade to indicate more content */
   .table-wrapper::after {
     content: "";
     pointer-events: none;
@@ -228,6 +227,7 @@
   header h1 { font-size: 28px; }
   .logo img { width: 120px; }
 }
+
 
 
   </style>
