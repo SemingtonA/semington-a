@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+Favicon logo Test website
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/Semington-a-test/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/Semington-a-test/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/Semington-a-test/favicon-16x16.png">
+<link rel="manifest" href="/Semington-a/site.webmanifest">
+  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Team Contributions</title>
+
+  <style>
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+    background-color: #f5f0e6;
+  }
+
+  /* ===== HEADER ===== */
+  header {
+    padding: 20px;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  header h1 {
+    margin: 0;
+    font-size: 100px;
+    text-align: center;
+    flex: 1;
+  }
+
+  .logo img {
+    width: 300px;
+    height: auto;
+  }
+
+  .nav-buttons {
+    margin-top: 15px;
+    text-align: center;
+  }
+
+  .nav-buttons a {
+    display: inline-block;
+    margin: 6px;
+    padding: 10px 18px;
+    background: #000;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+  }
+
+  .nav-buttons a:hover {
+    background: #163aa3;
+  }
+
+  .nav-buttons a.active {
+    background: #163aa3;
+  }
+
+  /* ===== MAIN ===== */
+  main {
+    flex: 1;
+    padding: 20px;
+  }
+
+  #divisionDisplay {
+    font-weight: bold;
+    font-size: 50px;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+
+  /* ===== TABLE ===== */
+#contributionsTable {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+    table {
+    width: max-content;     /* ⭐ SHRINK TO FIT CONTENT */
+    table-layout: auto;     /* ⭐ LET COLUMNS SIZE THEMSELVES */
+    border-collapse: collapse;
+    background: #ffffffcc;
+    margin-top: 20px;
+    margin-left: auto;      /* ⭐ CENTER THE TABLE */
+    margin-right: auto;     /* ⭐ CENTER THE TABLE */
+}
+/* Bold player names sitewide */
+#contributionsTable .player-name,
+.contrib-table .player-name,
+#contributionsTable td:first-child,
+.contrib-table td:first-child {
+  font-weight: 700;
+  font-family: inherit;
+}
+
+
+
+  th, td {
+    border: 1px solid #555;
+    padding: 10px;
+    text-align: center;
+  }
+
+  th {
+    background: #ddd;
+  }
+    .player-col {
+    width: 120px;      /* adjust as needed */
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+
+  /* Equal width for money columns */
+  .money-col {
+    width: 80px;
+    white-space: normal;
+  }
+
+  .win {
+    background: #b6f2ad;
+    font-weight: bold;
+  }
+
+  .paid {
+    background: #f7c5c5;
+    font-weight: bold;
+  }
+
+  .total {
+    background: #fff4b3;
+    font-weight: bold;
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    margin-top: auto;
+    text-align: center;
+    padding: 16px 20px 22px;
+    font-size: 12px;
+    color: #555;
+  }
+
+  .footer-logo img {
+    width: 60px;
+    opacity: 0.9;
+  }
+
+    
+  /* ===== MOBILE ===== */
+@media (max-width: 900px) {
+
+  html, body {
+    overflow-x: hidden;
+    overscroll-behavior-x: none;
+  }
+
+  
+  .table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    touch-action: pan-x;
+    width: 100%;
+    position: relative;
+  }
+
+  #contributionsTable {
+    min-width: 900px;
+    table-layout: fixed;
+  }
+
+  #contributionsTable th,
+  #contributionsTable td {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  #contributionsTable {
+    min-width: 560px;
+  }
+}
+/* Mobile header fixes — paste at end of mobile CSS */
+@media (max-width: 900px) {
+  header {
+    position: relative !important;
+    z-index: 20 !important;
+    background: inherit !important;
+  }
+
+  .header-top {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+    overflow: visible !important;
+  }
+
+  .logo {
+    display: block !important;
+    margin: 0 auto 8px auto !important;
+  }
+
+  .logo img {
+    display: block !important;
+    width: 160px !important;
+    max-width: 100% !important;
+    height: auto !important;
+    visibility: visible !important;
+  }
+
+  /* Ensure wrapper cannot overlap header */
+  .table-wrapper {
+    position: relative !important;
+    z-index: 1 !important;
+    margin-top: 0 !important;
+  }
+}
+/* Reduce mobile text sizes for header and table */
+@media (max-width:900px) {
+  /* Header title and small meta text */
+  header h1 {
+    font-size: 30px !important;
+    line-height: 1.1 !important;
+  }
+  .header-top .meta, .header-top .last-updated {
+    font-size: 12px !important;
+  }
+
+  /* Logo slightly smaller to free horizontal space */
+  .logo img {
+    width: 120px !important;
+  }
+
+  /* Table header smaller but readable; allow wrapping if needed */
+  #contributionsTable th {
+    font-size: 12px !important;
+    line-height: 1.1 !important;
+    white-space: normal !important;
+  }
+
+  /* Table body text slightly smaller to fit more columns */
+  #contributionsTable td {
+    font-size: 18px !important;
+  }
+}
+
+
+/* Extra small phones */
+@media (max-width:480px) {
+  header h1 { font-size: 30px !important; }
+  .logo img { width: 100px !important; }
+  #contributionsTable th { font-size: 12px !important; }
+  #contributionsTable td { font-size: 11px !important; }
+}
+
+
+
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="header-top">
+    <h1>Team Contributions</h1>
+
+    <div class="logo">
+      <img src="Semington A Logo 5.jpg" alt="Semington A Logo">
+    </div>
+  </div>
+  <div class="nav-buttons">
+       <nav class="nav-buttons" aria-label="Main navigation">
+      <a href="/semington-a/index.html">Home</a>
+      <a href="/semington-a/fixtures.html">Fixtures &amp; Results</a>
+      <a href="/semington-a/match-results-v2.html">Match Results</a>
+      <a href="/semington-a/tocatch.html">To Catch</a>
+      <a href="/semington-a/gallery.html">Gallery</a>
+      <a href="/semington-a/rules.html" aria-current="page">Rules</a>
+      <a href="/semington-a/teamcontributions.html">Team Contributions</a>
+      </nav>
+  </div>
+ 
+</header>
+
+<main>
+
+  <div id="divisionDisplay"></div>
+
+  <!-- CLEAN TABLE — NO TBODY -->
+<div class="table-wrapper">
+    <table id="contributionsTable" class="contrib-table"></table>
+</div>
+
+
+</main>
+
+<footer>
+  © Semington A Skittles Team
+  <div class="footer-logo">
+    <img src="Semington A Logo 5.jpg" alt="Semington A Logo">
+  </div>
+</footer>
+
+
+<script>
+window.addEventListener("error", e => console.error("Global error:", e.message, e.filename + ":" + e.lineno));
+
+
+// Convert CSV values to numbers safely
+function toNum(v) {
+    return Number(String(v).replace(/[^0-9.-]/g, "")) || 0;
+}
+
+// Format money, blank if zero
+function money(v) {
+  return Number(v) === 0 ? "" : "£" + Number(v).toFixed(2);
+}
+
+// Load CSV file
+async function loadCSV(file) {
+    const response = await fetch(file);
+    const text = await response.text();
+    return parseCSV(text);
+}
+
+// Parse CSV into objects
+function parseCSV(text) {
+    const lines = text.trim().split("\n");
+    const headers = lines[0].split(",").map(h => h.trim());
+
+    return lines.slice(1).map(line => {
+        const values = line.split(",");
+        const row = {};
+        headers.forEach((h, i) => row[h] = (values[i] || "").trim());
+        return row;
+    });
+}
+// Build season dropdown
+function buildSeasonDropdown(rows) {
+    const seasons = [...new Set(rows.map(r => r.Season))].filter(Boolean);
+
+    // Create container for Season + Dropdown + Last Updated
+    const bar = document.createElement("div");
+    bar.style.display = "flex";
+    bar.style.alignItems = "center";
+    bar.style.gap = "20px";
+    bar.style.marginBottom = "15px";
+
+    // Season label
+    const label = document.createElement("div");
+    label.textContent = "Season:";
+    label.style.fontWeight = "bold";
+
+    // Dropdown
+    const select = document.createElement("select");
+    select.id = "seasonSelect";
+    select.style.width = "auto";          // auto-size to text
+    select.style.padding = "4px 6px";
+
+    seasons.forEach(season => {
+        const opt = document.createElement("option");
+        opt.value = season;
+        opt.textContent = season;
+        select.appendChild(opt);
+    });
+
+    // Last updated text
+    const last = document.createElement("div");
+    last.id = "lastUpdated";
+    last.style.marginLeft = "auto";       // push to right side
+    last.style.fontStyle = "italic";
+
+    // Build bar
+    bar.appendChild(label);
+    bar.appendChild(select);
+    bar.appendChild(last);
+
+    // Insert above division display
+    document.getElementById("divisionDisplay").before(bar);
+
+    select.addEventListener("change", init);
+}
+
+
+// Group match rows by player
+function groupByPlayer(rows) {
+    const players = {};
+    const matchesById = {};
+
+    rows.forEach(r => {
+        const name = r["Semington A Player Name"];
+
+        // Remove junk players
+        if (!name || name === ")" || name === "A N Other" || name === "0") return;
+
+        if (!players[name]) {
+            players[name] = {
+                Player: name,
+                Division: r.Division.toLowerCase(),
+                Ducks: 0,
+                LegsWon: 0,
+                Spares: 0,
+                UnderCount: 0,
+                MatchCount: 0,
+                TopScoreWins: 0
+            };
+        }
+
+      players[name].MatchCount += 1;
+
+// determine cup once
+const isCup = (r["Match Details"] || "").toLowerCase().includes("cup");
+
+// always count these
+players[name].LegsWon += toNum(r["Legs Won"]);
+players[name].Spares += toNum(r.Spares);
+
+// only exclude Ducks for cup matches
+if (!isCup) {
+  players[name].Ducks += toNum(r.Ducks);
+}
+
+
+// Under 5/6 fines (Leg 1–5 only)
+const legs = [
+  toNum(r["Leg 1:"]),
+  toNum(r["Leg 2: "]),
+  toNum(r["Leg 3: "]),
+  toNum(r["Leg 4: "]),
+  toNum(r["Leg 5: "])
+];
+
+
+        const threshold = r.Division.toLowerCase() === "premier" ? 5 : 6;
+        players[name].UnderCount += legs.filter(l => l < threshold).length;
+
+        // Group by match for Top Score logic
+        const matchId = r["Match ID"];
+        if (!matchesById[matchId]) matchesById[matchId] = [];
+        matchesById[matchId].push({
+            name,
+            total: toNum(r["Total Score"]),
+            leg6: toNum(r["Leg 6:"]),
+            isCup: r["Match Details"].toLowerCase().includes("cup")
+        });
+    });
+
+    return { players, matchesById };
+}
+
+// Determine Top Score winners (League matches only)
+function applyTopScoreLogic(players, matchesById) {
+    Object.values(matchesById).forEach(match => {
+        if (match[0].isCup) return; // No Top Score in Cup matches
+
+        const highest = Math.max(...match.map(p => p.total));
+        const tied = match.filter(p => p.total === highest);
+
+        if (tied.length === 1) {
+            players[tied[0].name].TopScoreWins += 1;
+        } else {
+            // League tie → use Leg 6
+            const highestLeg6 = Math.max(...tied.map(p => p.leg6));
+            const leg6Winners = tied.filter(p => p.leg6 === highestLeg6);
+
+            if (leg6Winners.length === 1) {
+                players[leg6Winners[0].name].TopScoreWins += 1;
+            }
+            // If Leg 6 also tied → no Top Score awarded
+        }
+    });
+}
+// Extract fee rules for the season
+function getFeeRules(feesCSV, season) {
+    return feesCSV.filter(r => r["Year Dates"] === season);
+}
+
+// Determine Cup Fee for a match
+function getCupFee(feeRules, playerCount, homeAway) {
+    const id = `${playerCount} ${homeAway}`;
+    const rule = feeRules.find(r => r["Cup ID"] === id);
+    return rule ? toNum(rule["Cup Fees"]) : 0;
+}
+
+// Build final table rows
+function calculateRows(players, matches, feeRules) {
+    const rows = [];
+
+    Object.values(players).forEach(player => {
+        const isPremier = (player.Division || "").toLowerCase() === "premier";
+
+        const duckValue = isPremier
+            ? toNum(feeRules[0]["Duck Value Premier"])
+            : toNum(feeRules[0]["Duck Value Div 1"]);
+
+        const underValue = isPremier
+            ? toNum(feeRules[0]["Under 5 Premier"])
+            : toNum(feeRules[0]["Under 6 Div 1"]);
+
+        const legsWonValue = toNum(feeRules[0]["Legs won Value"]);
+        const topScoreValue = toNum(feeRules[0]["Top Score Value"]);
+        const spareValue = toNum(feeRules[0]["Spare Value"]);
+        const leagueFeeValue = toNum(feeRules[0]["League Fees"]);
+
+        // Earnings
+        const legsWonMoney = (player.LegsWon || 0) * legsWonValue;
+        const topScoreMoney = (player.TopScoreWins || 0) * topScoreValue;
+        const spareMoney = (player.Spares || 0) * spareValue;
+        const totalWin = legsWonMoney + topScoreMoney + spareMoney;
+
+        // Payments (counts -> amounts)
+        const ducksCount = Number(player.Ducks || 0);          // number of ducks
+        const duckFine = ducksCount * (Number(duckValue) || 0); // amount charged for ducks
+        const underCount = Number(player.UnderCount || 0);
+        const underFine = underCount * (Number(underValue) || 0);
+        const matchCount = Number(player.MatchCount || 0);
+        const leagueFees = matchCount * (Number(leagueFeeValue) || 0);
+
+        // Cup Fees
+        let cupFees = 0;
+        matches.forEach(m => {
+            if (!m["Match Details"]) return;
+            if (!m["Match Details"].toLowerCase().includes("cup")) return;
+            if (m["Semington A Player Name"] !== player.Player) return;
+
+            const matchId = m["Match ID"];
+            const homeAway = m["Home or Away"];
+            const playerCount = matches.filter(x => x["Match ID"] === matchId).length;
+
+            cupFees += getCupFee(feeRules, playerCount, homeAway);
+        });
+
+        const totalPaid = duckFine + underFine + leagueFees + cupFees;
+      
+rows.push({
+  Player: player.Player,
+  LegsWon: legsWonMoney,        // numeric
+  TopScore: topScoreMoney,      // numeric
+  Spares: spareMoney,           // numeric
+  TotalWin: totalWin,           // numeric
+
+  DucksCount: Number(player.Ducks || 0), // numeric count
+  Ducks: duckFine,              // numeric amount
+
+  Under: underFine,             // numeric
+  LeagueFees: leagueFees,       // numeric
+  CupFees: cupFees,             // numeric
+  TotalPaid: totalPaid          // numeric
+});
+
+      
+    });
+
+    return rows;
+}
+
+
+  // ⭐ RENDER TABLE
+function renderTable(rows, division) {
+    const table = document.getElementById("contributionsTable");
+    table.innerHTML = "";
+
+    // Dynamic Under header
+    const underHeader = division === "premier" ? "Under<br>5<br>£" : "Under<br>6<br>£";
+
+    // Build multi‑line header row
+    const headerRow = `
+    <tr>
+        <th class="player-col">Player<br>Name<br>&nbsp;</th>
+        <th class="money-col">Legs<br>Won<br>£</th>
+        <th class="money-col">Top<br>Score<br>£</th>
+        <th class="money-col">Spares<br>League+Cup<br>£</th>
+        <th class="money-col">Total<br>Win<br>£</th>
+        <th class="money-col">Ducks<br>(League)<br>£</th>
+        <th class="money-col">${underHeader}</th>
+        <th class="money-col">League<br>Fees<br>£</th>
+        <th class="money-col">Cup<br>Fees<br>£</th>
+        <th class="money-col">Total<br>Paid<br>£</th>
+    </tr>
+    `;
+
+    table.innerHTML = headerRow;
+
+    // Add rows
+    rows.forEach(r => {
+        table.innerHTML += `
+            <tr>
+                <td class="player-col">${r.Player}</td>
+<td class="win money-col">${money(Number(r.LegsWon))}</td>
+<td class="win money-col">${money(Number(r.TopScore))}</td>
+<td class="win money-col">${money(Number(r.Spares))}</td>
+<td class="win money-col" style="background:#7CFF7C; color:#004400;">
+  ${money(Number(r.TotalWin))}
+</td>
+<td class="paid money-col">${r.DucksCount ? r.DucksCount + " (" + money(Number(r.Ducks)) + ")" : money(Number(r.Ducks))}</td>
+<td class="paid money-col">${money(Number(r.Under))}</td>
+<td class="paid money-col">${money(Number(r.LeagueFees))}</td>
+<td class="paid money-col">${money(Number(r.CupFees))}</td>
+<td class="paid money-col" style="background:#FF7C7C; color:#660000;">
+  ${money(Number(r.TotalPaid))}
+</td>
+
+                
+            </tr>
+        `;
+    });
+}
+async function init() {
+    const matches = await loadCSV("csv_export.csv");
+    const feesCSV = await loadCSV("csv_team_fees.csv");
+
+    // Build dropdown once
+    if (!document.getElementById("seasonSelect")) {
+        buildSeasonDropdown(matches);
+    }
+
+    const season = document.getElementById("seasonSelect").value;
+    const feeRules = getFeeRules(feesCSV, season);
+
+    // ⭐ FILTER MATCHES FOR SELECTED SEASON (normalised)
+    const filtered = matches.filter(r =>
+        (r.Season || "").replace(/\s+/g, " ").trim() ===
+        season.replace(/\s+/g, " ").trim()
+    );
+
+        // ⭐ GROUP PLAYERS
+       const { players, matchesById } = groupByPlayer(filtered);
+
+       // ⭐ APPLY TOP SCORE LOGIC
+       applyTopScoreLogic(players, matchesById);
+
+       // ⭐ CALCULATE FINAL ROWS
+      const finalRows = calculateRows(players, filtered, feeRules);
+
+
+    // ⭐ DEBUG LOGS (to verify Ducks, fees, etc.)
+    console.log("feeRules[0]:", feeRules[0]);
+    console.log("Sample player object:", Object.values(players)[0]);
+    console.log("Final rows (first 5):", finalRows.slice(0, 5));
+
+    // ⭐ SET DIVISION DISPLAY
+    const playerList = Object.values(players);
+    const division = playerList.length > 0 ? playerList[0].Division : "";
+    document.getElementById("divisionDisplay").textContent =
+        "Division: " + division;
+
+    // ⭐ RENDER TABLE
+    renderTable(finalRows, division);
+}
+
+
+document.addEventListener("DOMContentLoaded", init);
+
+
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
