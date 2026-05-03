@@ -477,8 +477,10 @@ function applyTopScoreLogic(players, matchesById) {
 
 // Extract fee rules
 function getFeeRules(feesCSV, season) {
-    return feesCSV.filter(r => r?.["Year Dates"] === season);
+    const clean = s => (s || "").replace(/\s+/g, " ").trim();
+    return feesCSV.filter(r => clean(r["Year Dates"]) === clean(season));
 }
+
 
 // Determine Cup Fee
 function getCupFee(feeRules, playerCount, homeAway) {
