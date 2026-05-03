@@ -320,19 +320,17 @@
   </div>
 </footer>
 
-
 <script>
 window.addEventListener("error", e => console.error("Global error:", e.message, e.filename + ":" + e.lineno));
 
-
 // Convert CSV values to numbers safely
 function toNum(v) {
-    return Number(String(v).replace(/[^0-9.-]/g, "")) || 0;
+    return Number(String(v ?? "").replace(/[^0-9.-]/g, "")) || 0;
 }
 
 // Format money, blank if zero
 function money(v) {
-  return Number(v) === 0 ? "" : "£" + Number(v).toFixed(2);
+    return Number(v) === 0 ? "" : "£" + Number(v).toFixed(2);
 }
 
 // Load CSV file
@@ -342,38 +340,39 @@ async function loadCSV(file) {
     return parseCSV(text);
 }
 
-// Parse CSV into objects
+// Parse CSV into objects (now skips blank rows safely)
 function parseCSV(text) {
     const lines = text.trim().split("\n");
     const headers = lines[0].split(",").map(h => h.trim());
 
-    return lines.slice(1).map(line => {
-        const values = line.split(",");
-        const row = {};
-        headers.forEach((h, i) => row[h] = (values[i] || "").trim());
-        return row;
-    });
+    return lines.slice(1)
+        .map(line => {
+            const values = line.split(",").map(v => v.trim());
+            if (values.every(v => v === "")) return null; // skip blank rows
+            const row = {};
+            headers.forEach((h, i) => row[h] = values[i] ?? "");
+            return row;
+        })
+        .filter(r => r !== null);
 }
+
 // Build season dropdown
 function buildSeasonDropdown(rows) {
-    const seasons = [...new Set(rows.map(r => r.Season))].filter(Boolean);
+    const seasons = [...new Set(rows.map(r => r?.Season).filter(Boolean))];
 
-    // Create container for Season + Dropdown + Last Updated
     const bar = document.createElement("div");
     bar.style.display = "flex";
     bar.style.alignItems = "center";
     bar.style.gap = "20px";
     bar.style.marginBottom = "15px";
 
-    // Season label
     const label = document.createElement("div");
     label.textContent = "Season:";
     label.style.fontWeight = "bold";
 
-    // Dropdown
     const select = document.createElement("select");
     select.id = "seasonSelect";
-    select.style.width = "auto";          // auto-size to text
+    select.style.width = "auto";
     select.style.padding = "4px 6px";
 
     seasons.forEach(season => {
@@ -383,23 +382,19 @@ function buildSeasonDropdown(rows) {
         select.appendChild(opt);
     });
 
-    // Last updated text
     const last = document.createElement("div");
     last.id = "lastUpdated";
-    last.style.marginLeft = "auto";       // push to right side
+    last.style.marginLeft = "auto";
     last.style.fontStyle = "italic";
 
-    // Build bar
     bar.appendChild(label);
     bar.appendChild(select);
     bar.appendChild(last);
 
-    // Insert above division display
     document.getElementById("divisionDisplay").before(bar);
 
     select.addEventListener("change", init);
 }
-
 
 // Group match rows by player
 function groupByPlayer(rows) {
@@ -407,15 +402,15 @@ function groupByPlayer(rows) {
     const matchesById = {};
 
     rows.forEach(r => {
-        const name = r["Semington A Player Name"];
+        if (!r) return;
 
-        // Remove junk players
+        const name = r["Semington A Player Name"];
         if (!name || name === ")" || name === "A N Other" || name === "0") return;
 
         if (!players[name]) {
             players[name] = {
                 Player: name,
-                Division: r.Division.toLowerCase(),
+                Division: (r.Division || "").toLowerCase(),
                 Ducks: 0,
                 LegsWon: 0,
                 Spares: 0,
@@ -425,52 +420,45 @@ function groupByPlayer(rows) {
             };
         }
 
-      players[name].MatchCount += 1;
+        players[name].MatchCount += 1;
 
-// determine cup once
-const isCup = (r["Match Details"] || "").toLowerCase().includes("cup");
+        const isCup = (r["Match Details"] || "").toLowerCase().includes("cup");
 
-// always count these
-players[name].LegsWon += toNum(r["Legs Won"]);
-players[name].Spares += toNum(r.Spares);
+        players[name].LegsWon += toNum(r["Legs Won"]);
+        players[name].Spares += toNum(r.Spares);
 
-// only exclude Ducks for cup matches
-if (!isCup) {
-  players[name].Ducks += toNum(r.Ducks);
-}
+        if (!isCup) {
+            players[name].Ducks += toNum(r.Ducks);
+        }
 
+        const legs = [
+            toNum(r["Leg 1:"]),
+            toNum(r["Leg 2: "]),
+            toNum(r["Leg 3: "]),
+            toNum(r["Leg 4: "]),
+            toNum(r["Leg 5: "])
+        ];
 
-// Under 5/6 fines (Leg 1–5 only)
-const legs = [
-  toNum(r["Leg 1:"]),
-  toNum(r["Leg 2: "]),
-  toNum(r["Leg 3: "]),
-  toNum(r["Leg 4: "]),
-  toNum(r["Leg 5: "])
-];
-
-
-        const threshold = r.Division.toLowerCase() === "premier" ? 5 : 6;
+        const threshold = players[name].Division === "premier" ? 5 : 6;
         players[name].UnderCount += legs.filter(l => l < threshold).length;
 
-        // Group by match for Top Score logic
         const matchId = r["Match ID"];
         if (!matchesById[matchId]) matchesById[matchId] = [];
         matchesById[matchId].push({
             name,
             total: toNum(r["Total Score"]),
             leg6: toNum(r["Leg 6:"]),
-            isCup: r["Match Details"].toLowerCase().includes("cup")
+            isCup: (r["Match Details"] || "").toLowerCase().includes("cup")
         });
     });
 
     return { players, matchesById };
 }
 
-// Determine Top Score winners (League matches only)
+// Determine Top Score winners
 function applyTopScoreLogic(players, matchesById) {
     Object.values(matchesById).forEach(match => {
-        if (match[0].isCup) return; // No Top Score in Cup matches
+        if (match[0].isCup) return;
 
         const highest = Math.max(...match.map(p => p.total));
         const tied = match.filter(p => p.total === highest);
@@ -478,68 +466,55 @@ function applyTopScoreLogic(players, matchesById) {
         if (tied.length === 1) {
             players[tied[0].name].TopScoreWins += 1;
         } else {
-            // League tie → use Leg 6
             const highestLeg6 = Math.max(...tied.map(p => p.leg6));
             const leg6Winners = tied.filter(p => p.leg6 === highestLeg6);
-
             if (leg6Winners.length === 1) {
                 players[leg6Winners[0].name].TopScoreWins += 1;
             }
-            // If Leg 6 also tied → no Top Score awarded
         }
     });
 }
-// Extract fee rules for the season
+
+// Extract fee rules
 function getFeeRules(feesCSV, season) {
-    return feesCSV.filter(r => r["Year Dates"] === season);
+    return feesCSV.filter(r => r?.["Year Dates"] === season);
 }
 
-// Determine Cup Fee for a match
+// Determine Cup Fee
 function getCupFee(feeRules, playerCount, homeAway) {
     const id = `${playerCount} ${homeAway}`;
-    const rule = feeRules.find(r => r["Cup ID"] === id);
+    const rule = feeRules.find(r => r?.["Cup ID"] === id);
     return rule ? toNum(rule["Cup Fees"]) : 0;
 }
 
 // Build final table rows
 function calculateRows(players, matches, feeRules) {
     const rows = [];
+    if (!feeRules || !feeRules[0]) return rows;
 
     Object.values(players).forEach(player => {
-        const isPremier = (player.Division || "").toLowerCase() === "premier";
+        const isPremier = player.Division === "premier";
 
-        const duckValue = isPremier
-            ? toNum(feeRules[0]["Duck Value Premier"])
-            : toNum(feeRules[0]["Duck Value Div 1"]);
-
-        const underValue = isPremier
-            ? toNum(feeRules[0]["Under 5 Premier"])
-            : toNum(feeRules[0]["Under 6 Div 1"]);
-
+        const duckValue = toNum(feeRules[0][isPremier ? "Duck Value Premier" : "Duck Value Div 1"]);
+        const underValue = toNum(feeRules[0][isPremier ? "Under 5 Premier" : "Under 6 Div 1"]);
         const legsWonValue = toNum(feeRules[0]["Legs won Value"]);
         const topScoreValue = toNum(feeRules[0]["Top Score Value"]);
         const spareValue = toNum(feeRules[0]["Spare Value"]);
         const leagueFeeValue = toNum(feeRules[0]["League Fees"]);
 
-        // Earnings
-        const legsWonMoney = (player.LegsWon || 0) * legsWonValue;
-        const topScoreMoney = (player.TopScoreWins || 0) * topScoreValue;
-        const spareMoney = (player.Spares || 0) * spareValue;
+        const legsWonMoney = player.LegsWon * legsWonValue;
+        const topScoreMoney = player.TopScoreWins * topScoreValue;
+        const spareMoney = player.Spares * spareValue;
         const totalWin = legsWonMoney + topScoreMoney + spareMoney;
 
-        // Payments (counts -> amounts)
-        const ducksCount = Number(player.Ducks || 0);          // number of ducks
-        const duckFine = ducksCount * (Number(duckValue) || 0); // amount charged for ducks
-        const underCount = Number(player.UnderCount || 0);
-        const underFine = underCount * (Number(underValue) || 0);
-        const matchCount = Number(player.MatchCount || 0);
-        const leagueFees = matchCount * (Number(leagueFeeValue) || 0);
+        const duckFine = player.Ducks * duckValue;
+        const underFine = player.UnderCount * underValue;
+        const leagueFees = player.MatchCount * leagueFeeValue;
 
-        // Cup Fees
         let cupFees = 0;
         matches.forEach(m => {
-            if (!m["Match Details"]) return;
-            if (!m["Match Details"].toLowerCase().includes("cup")) return;
+            if (!m) return;
+            if (!(m["Match Details"] || "").toLowerCase().includes("cup")) return;
             if (m["Semington A Player Name"] !== player.Player) return;
 
             const matchId = m["Match ID"];
@@ -550,39 +525,32 @@ function calculateRows(players, matches, feeRules) {
         });
 
         const totalPaid = duckFine + underFine + leagueFees + cupFees;
-      
-rows.push({
-  Player: player.Player,
-  LegsWon: legsWonMoney,        // numeric
-  TopScore: topScoreMoney,      // numeric
-  Spares: spareMoney,           // numeric
-  TotalWin: totalWin,           // numeric
 
-  DucksCount: Number(player.Ducks || 0), // numeric count
-  Ducks: duckFine,              // numeric amount
-
-  Under: underFine,             // numeric
-  LeagueFees: leagueFees,       // numeric
-  CupFees: cupFees,             // numeric
-  TotalPaid: totalPaid          // numeric
-});
-
-      
+        rows.push({
+            Player: player.Player,
+            LegsWon: legsWonMoney,
+            TopScore: topScoreMoney,
+            Spares: spareMoney,
+            TotalWin: totalWin,
+            DucksCount: player.Ducks,
+            Ducks: duckFine,
+            Under: underFine,
+            LeagueFees: leagueFees,
+            CupFees: cupFees,
+            TotalPaid: totalPaid
+        });
     });
 
     return rows;
 }
 
-
-  // ⭐ RENDER TABLE
+// Render table
 function renderTable(rows, division) {
     const table = document.getElementById("contributionsTable");
     table.innerHTML = "";
 
-    // Dynamic Under header
     const underHeader = division === "premier" ? "Under<br>5<br>£" : "Under<br>6<br>£";
 
-    // Build multi‑line header row
     const headerRow = `
     <tr>
         <th class="player-col">Player<br>Name<br>&nbsp;</th>
@@ -600,35 +568,34 @@ function renderTable(rows, division) {
 
     table.innerHTML = headerRow;
 
-    // Add rows
     rows.forEach(r => {
         table.innerHTML += `
             <tr>
                 <td class="player-col">${r.Player}</td>
-<td class="win money-col">${money(Number(r.LegsWon))}</td>
-<td class="win money-col">${money(Number(r.TopScore))}</td>
-<td class="win money-col">${money(Number(r.Spares))}</td>
-<td class="win money-col" style="background:#7CFF7C; color:#004400;">
-  ${money(Number(r.TotalWin))}
-</td>
-<td class="paid money-col">${r.DucksCount ? r.DucksCount + " (" + money(Number(r.Ducks)) + ")" : money(Number(r.Ducks))}</td>
-<td class="paid money-col">${money(Number(r.Under))}</td>
-<td class="paid money-col">${money(Number(r.LeagueFees))}</td>
-<td class="paid money-col">${money(Number(r.CupFees))}</td>
-<td class="paid money-col" style="background:#FF7C7C; color:#660000;">
-  ${money(Number(r.TotalPaid))}
-</td>
-
-                
+                <td class="win money-col">${money(r.LegsWon)}</td>
+                <td class="win money-col">${money(r.TopScore)}</td>
+                <td class="win money-col">${money(r.Spares)}</td>
+                <td class="win money-col" style="background:#7CFF7C; color:#004400;">
+                    ${money(r.TotalWin)}
+                </td>
+                <td class="paid money-col">
+                    ${r.DucksCount ? r.DucksCount + " (" + money(r.Ducks) + ")" : money(r.Ducks)}
+                </td>
+                <td class="paid money-col">${money(r.Under)}</td>
+                <td class="paid money-col">${money(r.LeagueFees)}</td>
+                <td class="paid money-col">${money(r.CupFees)}</td>
+                <td class="paid money-col" style="background:#FF7C7C; color:#660000;">
+                    ${money(r.TotalPaid)}
+                </td>
             </tr>
         `;
     });
 }
+
 async function init() {
     const matches = await loadCSV("csv_export.csv");
     const feesCSV = await loadCSV("csv_team_fees.csv");
 
-    // Build dropdown once
     if (!document.getElementById("seasonSelect")) {
         buildSeasonDropdown(matches);
     }
@@ -636,42 +603,25 @@ async function init() {
     const season = document.getElementById("seasonSelect").value;
     const feeRules = getFeeRules(feesCSV, season);
 
-    // ⭐ FILTER MATCHES FOR SELECTED SEASON (normalised)
     const filtered = matches.filter(r =>
-        (r.Season || "").replace(/\s+/g, " ").trim() ===
+        (r?.Season || "").replace(/\s+/g, " ").trim() ===
         season.replace(/\s+/g, " ").trim()
     );
 
-        // ⭐ GROUP PLAYERS
-       const { players, matchesById } = groupByPlayer(filtered);
+    const { players, matchesById } = groupByPlayer(filtered);
+    applyTopScoreLogic(players, matchesById);
 
-       // ⭐ APPLY TOP SCORE LOGIC
-       applyTopScoreLogic(players, matchesById);
+    const finalRows = calculateRows(players, filtered, feeRules);
 
-       // ⭐ CALCULATE FINAL ROWS
-      const finalRows = calculateRows(players, filtered, feeRules);
-
-
-    // ⭐ DEBUG LOGS (to verify Ducks, fees, etc.)
-    console.log("feeRules[0]:", feeRules[0]);
-    console.log("Sample player object:", Object.values(players)[0]);
-    console.log("Final rows (first 5):", finalRows.slice(0, 5));
-
-    // ⭐ SET DIVISION DISPLAY
     const playerList = Object.values(players);
     const division = playerList.length > 0 ? playerList[0].Division : "";
     document.getElementById("divisionDisplay").textContent =
         "Division: " + division;
 
-    // ⭐ RENDER TABLE
     renderTable(finalRows, division);
 }
 
-
 document.addEventListener("DOMContentLoaded", init);
-
-
-
 </script>
 
 </body>
